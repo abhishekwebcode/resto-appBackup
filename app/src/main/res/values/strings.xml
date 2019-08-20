@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Starbites</string>
+    <string name="err_msg_email">Please Enter A Valid Email Id</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="emailId">customersupport@starbitesgh.com</string>
+    <string name="contactNo">+233202266204</string>
+    <string name="secure_payment_text"><![CDATA[Safe and Secure Payments. Easy returns <br />100% Authentic products]]></string>
+
+</resources>
