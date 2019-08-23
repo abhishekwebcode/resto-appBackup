@@ -17,6 +17,11 @@
                 android:icon="@drawable/menu_cart_icon"
                 android:title="My Cart" />
             <item
+                android:icon="@drawable/voucher"
+                android:id="@+id/myVouchers"
+                android:title="My Vouchers"
+                />
+            <item
                 android:id="@+id/myOrders"
                 android:icon="@drawable/my_order_icon"
                 android:title="My Orders" />

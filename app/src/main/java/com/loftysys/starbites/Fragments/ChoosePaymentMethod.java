@@ -176,12 +176,13 @@ public class ChoosePaymentMethod extends Fragment {
                         "COD",
                         "COD");
                 break;
-            case R.id.paypal:
+            case R.id.satellite:
+                //paypal was here
                 paymentMethod = "paypal";
                 intent = new Intent(getActivity(), PayPalActivityPayment.class);
                 startActivity(intent);
                 break;
-            case R.id.stripe:
+            case R.id.search:
                 paymentMethod = "stripe";
                 intent = new Intent(getActivity(), StripePaymentIntegration.class);
                 startActivity(intent);

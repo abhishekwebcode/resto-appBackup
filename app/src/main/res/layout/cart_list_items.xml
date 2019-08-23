@@ -206,11 +206,30 @@
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/delivery_method"
+                    android:entries="@array/delivery_methods"
+                    android:layout_below="@id/txtPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.AppCompatSpinner>
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/select_branch"
+                    android:entries="@array/select_branch"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/delivery_method"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
                 <TextView
                     android:id="@+id/txtDelivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPrice"
+                    android:layout_below="@+id/select_branch"
                     android:layout_marginTop="10dp"
                     android:text="Delivery"
                     android:textColor="@color/black"
@@ -221,7 +240,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@+id/txtPrice"
+                    android:layout_below="@+id/select_branch"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/black"
                     android:textSize="13sp" />

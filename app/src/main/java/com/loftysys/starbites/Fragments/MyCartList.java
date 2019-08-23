@@ -116,14 +116,18 @@ public class MyCartList extends Fragment {
         pDialog.setTitleText("Loading");
         pDialog.setCancelable(false);
         pDialog.show();
+
+
+        Api.getClient()
+
         Api.getClient().getCartList(MainActivity.userId, new Callback<CartistResponse>() {
             @Override
             public void success(CartistResponse cartistResponse, Response response) {
-
                 cartistResponseData = cartistResponse;
                 pDialog.dismiss();
                 productsData = new ArrayList<>();
                 productsData = cartistResponse.getProducts();
+
                 if (cartistResponse.getSuccess().equalsIgnoreCase("false")) {
                     verifyEmailLayout.setVisibility(View.VISIBLE);
                     proceedToPayment.setVisibility(View.GONE);

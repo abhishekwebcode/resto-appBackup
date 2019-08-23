@@ -36,6 +36,7 @@ import com.loftysys.starbites.Fragments.MyProfile;
 import com.loftysys.starbites.Fragments.ProductDetail;
 import com.loftysys.starbites.Fragments.RestaurantDetails;
 import com.loftysys.starbites.Fragments.SearchProducts;
+import com.loftysys.starbites.Fragments.showVouchers;
 import com.loftysys.starbites.R;
 
 import butterknife.BindView;
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.navigationView)
     NavigationView navigationView;
+
+
+    public void login() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +93,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.myVouchers:
+                        loadFragment(new showVouchers(),true);
+                        break;
                     case R.id.myFavorite:
                         loadFragment(new FavoriteList(), true);
-
                         break;
                     case R.id.myCart:
                         loadFragment(new MyCartList(), true);

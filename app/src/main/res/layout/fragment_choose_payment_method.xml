@@ -252,17 +252,17 @@
                         android:orientation="vertical">
 
                         <RadioButton
-                            android:id="@+id/paypal"
+                            android:id="@+id/asoriba"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Pay Using PayPal" />
+                            android:text="Pay Using Asoriba" />
 
                         <RadioButton
-                            android:id="@+id/stripe"
+                            android:id="@+id/voucher"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Pay Using Stripe" />
+                            android:text="Pay Using Voucher" />
 
                         <RadioButton
                             android:id="@+id/cod"

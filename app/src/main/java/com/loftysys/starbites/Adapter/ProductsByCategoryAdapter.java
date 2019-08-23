@@ -20,13 +20,13 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.loftysys.starbites.Activities.MainActivity;
+import com.loftysys.starbites.Activities.ProductExtra;
+import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Fragments.MainFragment;
 import com.loftysys.starbites.Fragments.ProductDetail;
 import com.loftysys.starbites.MVP.Product;
-import com.loftysys.starbites.Activities.MainActivity;
-import com.loftysys.starbites.Activities.ProductExtra;
 import com.loftysys.starbites.R;
-import com.loftysys.starbites.Activities.SplashScreen;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -103,11 +103,13 @@ public class ProductsByCategoryAdapter extends RecyclerView.Adapter<ProductsByCa
 
         //  Log.d("positioon", MainFragment.selectedPosList.get(position) + " " + productList.get(position).getVariants().get());
         if (isFirstTime) {
-
-            holder.price.setText(productList.get(position).getVariants().get(0).getVarprice());
-            holder.productName.setText(productList.get(position).getProductName() + " - " +
-                    productList.get(position).getVariants().get(0).getVariantname());
-
+            try {
+                holder.price.setText(productList.get(position).getVariants().get(0).getVarprice());
+                holder.productName.setText(productList.get(position).getProductName() + " - " +
+                        productList.get(position).getVariants().get(0).getVariantname());
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         } else {
             Log.d("positioon", SplashScreen.categoryListResponseData.get(MainFragment.viewPagerCurrentPos - 1).getProducts().get(position).getVariants().get((MainFragment.selectedPosHashMap.get(MainFragment.viewPagerCurrentPos)).get(position)).getVarprice());
             holder.price.setText(SplashScreen.categoryListResponseData.get(MainFragment.viewPagerCurrentPos - 1).getProducts().get(position).getVariants().get((MainFragment.selectedPosHashMap.get(MainFragment.viewPagerCurrentPos)).get(position)).getVarprice());
@@ -236,14 +238,14 @@ public class ProductsByCategoryAdapter extends RecyclerView.Adapter<ProductsByCa
                 @Override
                 public void onClick(View view) {
 
-                    ProductExtra.product=productList.get(getAdapterPosition());
+                    ProductExtra.product = productList.get(getAdapterPosition());
                     MainFragment.extraList = new ArrayList<>();
                     MainFragment.extraList.addAll(productList.get(getAdapterPosition()).getExtra());
                     Intent intent = new Intent(context, ProductExtra.class);
-                    intent.putExtra("productOrderLimit",productList.get(getAdapterPosition()).getPlimit());
-                    intent.putExtra("productName",productName.getText().toString());
-                    intent.putExtra("productPrice",price.getText().toString());
-                    intent.putExtra("productImage",productList.get(getAdapterPosition()).getProductPrimaryImage());
+                    intent.putExtra("productOrderLimit", productList.get(getAdapterPosition()).getPlimit());
+                    intent.putExtra("productName", productName.getText().toString());
+                    intent.putExtra("productPrice", price.getText().toString());
+                    intent.putExtra("productImage", productList.get(getAdapterPosition()).getProductPrimaryImage());
                     context.startActivity(intent);
 
                 }

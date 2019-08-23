@@ -93,8 +93,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
 
             holder.textViews.get(0).setText(" Total Price (" + cartProducts.size() + " items)");
             holder.textViews.get(1).setText(MainActivity.currency + " " + String.format("%.2f",totalAmount));
-            if (MyCartList.cartistResponseData.getShipping().length() > 0) {
 
+            if (MyCartList.cartistResponseData.getShipping().length() > 0) {
                 holder.textViews.get(2).setText(MainActivity.currency + " " + String.format("%.2f",Double.parseDouble(MyCartList.cartistResponseData.getShipping())));
                 amountPayable = totalAmount +
                         Double.parseDouble(MyCartList.cartistResponseData.getShipping());

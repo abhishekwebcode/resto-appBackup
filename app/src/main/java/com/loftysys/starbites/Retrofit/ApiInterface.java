@@ -1,7 +1,10 @@
 package com.loftysys.starbites.Retrofit;
 
 
+import android.telecom.Call;
+
 import com.loftysys.starbites.MVP.AddToWishlistResponse;
+import com.loftysys.starbites.MVP.BranchResponse;
 import com.loftysys.starbites.MVP.CartistResponse;
 import com.loftysys.starbites.MVP.CategoryListResponse;
 import com.loftysys.starbites.MVP.FAQResponse;
@@ -14,6 +17,7 @@ import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.StripeResponse;
 import com.loftysys.starbites.MVP.TermsResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
+import com.loftysys.starbites.MVP.VoucherResponse;
 import com.loftysys.starbites.MVP.WishlistResponse;
 
 import java.util.List;
@@ -37,6 +41,9 @@ public interface ApiInterface {
 
     @GET("/pbyc.php")
     public void getCategoryList(Callback<List<CategoryListResponse>> callback);
+
+    @GET("/get_branch.php")
+    public void getBranches(Callback<BranchResponse> callback);
 
     @GET("/resdetails.php")
     public void getRestaurantDetail(Callback<RestaurantDetailResponse> callback);
@@ -64,6 +71,12 @@ public interface ApiInterface {
                           @Field("varient_price") String varient_price, @Field("product_name") String product_name,
                           Callback<AddToWishlistResponse> callback);
 
+    @FormUrlEncoded
+    @POST("/voucher.php")
+    public void getVouchers(
+            @Field("user_id") String user_id,
+            Callback<VoucherResponse> callback
+    );
 
     @FormUrlEncoded
     @POST("/deletecart.php")

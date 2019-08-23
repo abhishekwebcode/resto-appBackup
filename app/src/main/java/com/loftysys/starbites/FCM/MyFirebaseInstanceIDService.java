@@ -2,6 +2,7 @@ package com.loftysys.starbites.FCM;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.Preference;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -17,7 +18,6 @@ import retrofit.client.Response;
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = MyFirebaseInstanceIDService.class.getSimpleName();
-
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();

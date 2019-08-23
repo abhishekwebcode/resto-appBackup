@@ -7,5 +7,11 @@
     <string name="emailId">customersupport@starbitesgh.com</string>
     <string name="contactNo">+233202266204</string>
     <string name="secure_payment_text"><![CDATA[Safe and Secure Payments. Easy returns <br />100% Authentic products]]></string>
+    <string-array name="delivery_methods">
+        <item>Select Delivery Method</item><item>Dine-In</item><item>Take Away</item><item>Delivery</item>
+    </string-array>
+    <string-array name="select_branch">
+        <item>Select Branch</item>
+    </string-array>
 
 </resources>

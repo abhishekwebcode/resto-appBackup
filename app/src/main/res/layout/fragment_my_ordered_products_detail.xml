@@ -253,6 +253,7 @@
                     android:textSize="12sp" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:layout_width="1dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
@@ -261,6 +262,7 @@
                     android:src="@drawable/dash_line" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/orderDispatched"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -268,6 +270,7 @@
                     android:src="@drawable/order_circle" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -295,7 +298,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
-                    android:text="Order Complete"
+                    android:text="Order Approved"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
