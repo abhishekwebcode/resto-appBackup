@@ -28,6 +28,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 public interface ApiInterface {
 
@@ -76,11 +77,10 @@ public interface ApiInterface {
                           @Field("varient_price") String varient_price, @Field("product_name") String product_name,
                           Callback<AddToWishlistResponse> callback);
 
-    @FormUrlEncoded
-    @POST("/voucher.php")
+    @GET("/voucher.php")
     public void getVouchers(
-            @Field("user_id") String user_id,
-            Callback<VoucherResponse> callback
+            @Query("user_id") String user_id,
+            Callback<Response> callback
     );
 
     @FormUrlEncoded
@@ -167,6 +167,22 @@ public interface ApiInterface {
                          @Field("paystatus") String paystatus,
                          @Field("total") String total,
                          @Field("paymentmode") String paymentmode,
+                         Callback<SignUpResponse> callback);
+    @FormUrlEncoded
+    @POST("/addorders.php")
+    public void addOrderVoucher(@Field("user_id") String user_id,
+                         @Field("cart_id") String cart_id,
+                         @Field("address") String address,
+                         @Field("phone") String phone,
+                         @Field("paymentref") String paymentref,
+                         @Field("paystatus") String paystatus,
+                         @Field("total") String total,
+                         @Field("paymentmode") String paymentmode,
+                         @Field("delivery") String delivery,
+                         @Field("restax") String restax,
+                         @Field("chosen_branch") String chosen_branch,
+                         @Field("chosen_table") String chosen_table,
+                         @Field("delivery_method") String delivery_method,
                          Callback<SignUpResponse> callback);
 
 

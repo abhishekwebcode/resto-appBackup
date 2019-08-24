@@ -28,6 +28,7 @@ public class OrderConfirmed extends AppCompatActivity {
 
     @OnClick(R.id.continueShopping)
     public void onClick(View view) {
+        System.out.println("GOING TO MAIN ACTIVITY");
         Intent intent = new Intent(OrderConfirmed.this, MainActivity.class);
         startActivity(intent);
         finishAffinity();
@@ -35,6 +36,7 @@ public class OrderConfirmed extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        System.out.println("GOING TO MAIN ACTIVITY");
         Intent intent = new Intent(OrderConfirmed.this, MainActivity.class);
         startActivity(intent);
         finishAffinity();

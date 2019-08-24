@@ -1,6 +1,7 @@
 package com.loftysys.starbites.Fragments;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,10 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.loftysys.starbites.Adapter.CartListAdapter;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Extras.Converter;
+import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
 import com.loftysys.starbites.Activities.MainActivity;
+import com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed;
 import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
 import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration;
 import com.loftysys.starbites.R;
@@ -210,15 +214,108 @@ public class ChoosePaymentMethod extends Fragment {
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+    private void continueArisoba() {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        MainActivity reference = (MainActivity)getActivity();
+
+        Api.getClient().addOrderVoucher(MainActivity.userId,
+                MyCartList.cartistResponseData.getCartid(),
+                ChoosePaymentMethod.address,
+                ChoosePaymentMethod.mobileNo,
+                "Arisoba Payment for user "+MainActivity.userId,
+                "Pending",
+                CartListAdapter.totalAmountPayable,
+                "Arisoba",
+                reference.deliveryType==null?"":reference.deliveryType,
+                "-1",
+                reference.branch==null?"":reference.branch,
+                reference.tableNumber==null?"":reference.tableNumber,
+                reference.deliveryType==null?"":reference.deliveryType,
+                new Callback<SignUpResponse>() {
+                    @Override
+                    public void success(SignUpResponse signUpResponse, Response response) {
+                        pDialog.dismiss();
+                        try {
+                            Log.d("RESPONSE",Converter.getString(response));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("GOING TO MAIN ACTIVITY");
+                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                        getActivity().startActivity(intent);
+                        ((Activity) getActivity()).finishAffinity();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        pDialog.dismiss();
+                        Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
+                        ((Activity) getActivity()).finish();
+                    }
+                });
+    }
     private void moveNext() {
+        paymentMethod="";
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
             case R.id.asoriba:
                 voucherBox.setVisibility(GONE);
+
+                continueArisoba();
 
                 break;
             case R.id.voucher:
                 voucherBox.setVisibility(View.VISIBLE);
                 if (isVoucherDone) {
+
+                    final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                    pDialog.setTitleText("Loading");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
+
+                    MainActivity reference = (MainActivity)getActivity();
+
+                    Api.getClient().addOrderVoucher(MainActivity.userId,
+                            MyCartList.cartistResponseData.getCartid(),
+                            ChoosePaymentMethod.address,
+                            ChoosePaymentMethod.mobileNo,
+                            "Voucher "+voucher+" Applied for "+MainActivity.userId,
+                            "Complete",
+                            CartListAdapter.totalAmountPayable,
+                            "Voucher",
+                            reference.deliveryType==null?"":reference.deliveryType,
+                            "-1",
+                            reference.branch==null?"":reference.branch,
+                            reference.tableNumber==null?"":reference.tableNumber,
+                            reference.deliveryType==null?"":reference.deliveryType,
+                            new Callback<SignUpResponse>() {
+                                @Override
+                                public void success(SignUpResponse signUpResponse, Response response) {
+                                    pDialog.dismiss();
+                                    try {
+                                        Log.d("RESPONSE",Converter.getString(response));
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println("GOING TO MAIN ACTIVITY");
+                                    Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                                    getActivity().startActivity(intent);
+                                    ((Activity) getActivity()).finishAffinity();
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    pDialog.dismiss();
+                                    Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
+                                    ((Activity) getActivity()).finish();
+                                }
+                            });
+
 
                 } else {
                     Toast.makeText(getActivity(), "Please apply a voucher", Toast.LENGTH_SHORT).show();
@@ -254,7 +351,6 @@ public class ChoosePaymentMethod extends Fragment {
 
         }
 
-        Log.d("paymentMethod", paymentMethod);
     }
 
     private boolean validate(EditText editText) {
