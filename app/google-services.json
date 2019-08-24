@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "148698672172",
+    "firebase_url": "https://food-ordering-a0b2a.firebaseio.com",
+    "project_id": "food-ordering-a0b2a",
+    "storage_bucket": "food-ordering-a0b2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148698672172:android:bdef34d93a2588e1",
+        "android_client_info": {
+          "package_name": "com.loftysys.starbites"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148698672172-85ls125gorndup8j5b3t74lhksbi8rrf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuo4Iobu3kIYoTmls7j9Ut4Ab3KfMvvSU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
