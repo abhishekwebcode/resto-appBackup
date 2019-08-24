@@ -46,6 +46,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
+    public String deliveryType=null;
+    public String tableNumber=null;
+    public String branch=null;
+
     public static ImageView menu, back, cart,search;
     public static DrawerLayout drawerLayout;
     public static TextView title, cartCount;
@@ -58,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.navigationView)
     NavigationView navigationView;
 
+    public void setAllNulls() {
+        deliveryType=null;
+        tableNumber=null;
+        branch=null;
+    }
 
     public void login() {
 

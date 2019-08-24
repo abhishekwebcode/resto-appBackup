@@ -23,6 +23,7 @@ import com.loftysys.starbites.MVP.WishlistResponse;
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -43,7 +44,11 @@ public interface ApiInterface {
     public void getCategoryList(Callback<List<CategoryListResponse>> callback);
 
     @GET("/get_branch.php")
-    public void getBranches(Callback<BranchResponse> callback);
+    public void getBranches(Callback<Response> callback);
+
+
+    @GET("/get_table.php")
+    public void getTables(Callback<Response> callback);
 
     @GET("/resdetails.php")
     public void getRestaurantDetail(Callback<RestaurantDetailResponse> callback);
@@ -143,6 +148,14 @@ public interface ApiInterface {
                               @Field("phone") String phone,
                               Callback<StripeResponse> callback);
 
+
+    @FormUrlEncoded
+    @POST("/check_voucher.php")
+    public void check_voucher(
+            @Field("user_id") String user_id,
+            @Field("voucher") String voucher,
+            Callback<Response> callback
+    );
 
     @FormUrlEncoded
     @POST("/addorders.php")

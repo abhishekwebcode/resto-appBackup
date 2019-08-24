@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.loftysys.starbites.Activities.EditCart;
+import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.Fragments.MainFragment;
 import com.loftysys.starbites.MVP.CartProducts;
 import com.loftysys.starbites.Activities.MainActivity;
@@ -37,12 +40,16 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     List<CartProducts> cartProducts;
     public static double totalAmount = 0f, amountPayable;
     public static String totalAmountPayable;
+    ArrayList<Converter.Branch> branches;
     double tax = 0f;
+    MyCartList reference;
 
-    public CartListAdapter(Context context, List<CartProducts> cartProducts) {
+    public CartListAdapter(Context context, List<CartProducts> cartProducts, ArrayList<Converter.Branch> branches,MyCartList myCartList) {
         this.context = context;
         this.cartProducts = cartProducts;
         totalAmount = 0f;
+        this.branches=branches;
+        this.reference=myCartList;
     }
 
     @Override
@@ -90,10 +97,32 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
         if (position == cartProducts.size() - 1) {
             holder.totalAmount.setVisibility(View.VISIBLE);
             holder.txtGurantee.setText(Html.fromHtml(context.getResources().getString(R.string.secure_payment_text)));
-
             holder.textViews.get(0).setText(" Total Price (" + cartProducts.size() + " items)");
             holder.textViews.get(1).setText(MainActivity.currency + " " + String.format("%.2f",totalAmount));
+            holder.select_branch.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,Converter.Branch.getAdapterObject(branches)));
+            reference.deliverySpinner=holder.delivery_method;
+            holder.delivery_method.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    reference.onDeliveryChanged(position);
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            holder.select_branch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    reference.onBranchChanged(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
             if (MyCartList.cartistResponseData.getShipping().length() > 0) {
                 holder.textViews.get(2).setText(MainActivity.currency + " " + String.format("%.2f",Double.parseDouble(MyCartList.cartistResponseData.getShipping())));
                 amountPayable = totalAmount +

@@ -1,11 +1,13 @@
 package com.loftysys.starbites.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.loftysys.starbites.Extras.Config;
+import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.MVP.UserProfileResponse;
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
@@ -29,6 +33,8 @@ import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
 import com.loftysys.starbites.Activities.SplashScreen;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -38,12 +44,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit.Callback;
+import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ChoosePaymentMethod extends Fragment {
+import static android.view.View.GONE;
 
+public class ChoosePaymentMethod extends Fragment {
+    ProgressDialog progressDialog;
     View view;
+    @BindView(R.id.voucher_box)
+    LinearLayout voucherBox;
     @BindView(R.id.addNewAddressLayout)
     LinearLayout addNewAddressLayout;
     @BindView(R.id.addressCheckBox)
@@ -56,6 +67,7 @@ public class ChoosePaymentMethod extends Fragment {
     RadioGroup paymentMethodsGroup;
     @BindView(R.id.makePayment)
     Button makePayment;
+    String voucher;
     String paymentMethod;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -63,8 +75,13 @@ public class ChoosePaymentMethod extends Fragment {
     LinearLayout choosePaymentLayout;
     @BindViews({R.id.fullNameEdt, R.id.mobEditText, R.id.cityEditText, R.id.areaEditText, R.id.buildingEditText, R.id.pincodeEditText, R.id.stateEditText, R.id.landmarkEditText,})
     List<EditText> editTexts;
+    @BindView(R.id.voucher_field)
+    EditText voucher_field;
+    @BindView(R.id.voucher_verified)
+    AppCompatButton voucher_verified;
     public static String address, mobileNo,userEmail,profilePinCode;
     Intent intent;
+    Boolean isVoucherDone=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,14 +91,14 @@ public class ChoosePaymentMethod extends Fragment {
         view = inflater.inflate(layout, container, false);
         ButterKnife.bind(this, view);
         MainActivity.title.setText("Choose Payment Method");
-        MainActivity.cart.setVisibility(View.GONE);
-        MainActivity.cartCount.setVisibility(View.GONE);
+        MainActivity.cart.setVisibility(GONE);
+        MainActivity.cartCount.setVisibility(GONE);
         getUserProfileData();
         addressCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    addNewAddressLayout.setVisibility(View.GONE);
+                    addNewAddressLayout.setVisibility(GONE);
                     addNewAddress.setText("Add New Address");
                 }
             }
@@ -91,6 +108,31 @@ public class ChoosePaymentMethod extends Fragment {
             public void onClick(View view) {
                 hideKeyboard(view);
 
+            }
+        });
+        paymentMethodsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
+                    case R.id.asoriba:
+                        voucherBox.setVisibility(GONE);
+                        break;
+                    case R.id.voucher:
+                        voucherBox.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.cod:
+                        voucherBox.setVisibility(GONE);
+                        break;
+                    default:
+                        voucherBox.setVisibility(GONE);
+                        break;
+                }
+            }
+        });
+        voucher_verified.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyVoucher(v);
             }
         });
         return view;
@@ -135,6 +177,7 @@ public class ChoosePaymentMethod extends Fragment {
                                     + ", " + editTexts.get(5).getText().toString().trim()
                                     + "\n" + editTexts.get(1).getText().toString().trim();
                             mobileNo = editTexts.get(1).getText().toString().trim();
+                            Log.i("NO","NO ERROR IN DATA");
                             moveNext();
                         }
                     } else {
@@ -169,8 +212,20 @@ public class ChoosePaymentMethod extends Fragment {
     }
     private void moveNext() {
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
+            case R.id.asoriba:
+                voucherBox.setVisibility(GONE);
 
+                break;
+            case R.id.voucher:
+                voucherBox.setVisibility(View.VISIBLE);
+                if (isVoucherDone) {
+
+                } else {
+                    Toast.makeText(getActivity(), "Please apply a voucher", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.cod:
+                voucherBox.setVisibility(GONE);
                 paymentMethod = "cod";
                 Config.addOrder(getActivity(),
                         "COD",
@@ -188,6 +243,7 @@ public class ChoosePaymentMethod extends Fragment {
                 startActivity(intent);
                 break;
             default:
+                voucherBox.setVisibility(GONE);
                 paymentMethod = "";
                 Config.showCustomAlertDialog(getActivity(),
                         "Payment Method",
@@ -208,6 +264,45 @@ public class ChoosePaymentMethod extends Fragment {
         editText.setError("Please Fill This");
         editText.requestFocus();
         return false;
+    }
+
+    public void verifyVoucher(View v) {
+        if (isVoucherDone) {
+            isVoucherDone=false;
+            voucher_field.setEnabled(true);
+            voucher_field.setText("");
+            voucher="";
+            voucher_verified.setText("Verify Voucher");
+        } else {
+            voucher = voucher_field.getText().toString();
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.show();
+            Api.getClient().check_voucher(MainActivity.userId, voucher, new ResponseCallback() {
+                @Override
+                public void success(Response response) {
+                    progressDialog.cancel();
+                    try {
+                        String res = Converter.getString(response);
+                        JSONObject jsonObject = new JSONObject(res);
+                        if (jsonObject.getString("status").equals("1")) {
+                            voucher_field.setEnabled(false);
+                            voucher_verified.setText("Voucher Applied");
+                            isVoucherDone=true;
+                        } else {
+                            Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                        Log.d("jj", res);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    progressDialog.cancel();
+                }
+            });
+        }
     }
 
     private boolean validatePinCode(EditText editText) {
@@ -237,7 +332,7 @@ public class ChoosePaymentMethod extends Fragment {
                     @Override
                     public void success(UserProfileResponse userProfileResponse, Response response) {
                         makePayment.setClickable(true);
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(GONE);
                         userEmail=userProfileResponse.getEmail();
                         String s = "";
                         if (!userProfileResponse.getLandmark().equalsIgnoreCase("")) {
@@ -245,7 +340,7 @@ public class ChoosePaymentMethod extends Fragment {
                         }
                         if (userProfileResponse.getFlat().equalsIgnoreCase("")) {
                             addressCheckBox.setChecked(false);
-                            addressCheckBox.setVisibility(View.GONE);
+                            addressCheckBox.setVisibility(GONE);
                             fillAddress.setVisibility(View.VISIBLE);
                         } else {
                             address = userProfileResponse.getName()
@@ -267,7 +362,7 @@ public class ChoosePaymentMethod extends Fragment {
                     @Override
                     public void failure(RetrofitError error) {
                         makePayment.setClickable(true);
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(GONE);
 
                     }
                 });
