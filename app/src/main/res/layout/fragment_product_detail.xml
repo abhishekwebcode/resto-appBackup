@@ -92,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/productName"
                             android:maxLines="3"
-                            android:text="$ "
+                            android:text="GH₵ "
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:textStyle="bold" />

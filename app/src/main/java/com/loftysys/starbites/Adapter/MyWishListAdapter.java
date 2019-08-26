@@ -91,7 +91,7 @@ public class MyWishListAdapter extends RecyclerView.Adapter<MyWishListAdapter.My
     @Override
     public void onBindViewHolder(final MyWishListViewHolder holder, final int position) {
 
-        holder.currency.setText("$");
+        holder.currency.setText("GH₵");
         Log.d("posIS", selectedList + "");
         holder.price.setText(productList.get(position).getVariants().get(selectedList.get(position)).getVarprice());
         holder.productName.setText(productList.get(position).getProductName() + " - " +

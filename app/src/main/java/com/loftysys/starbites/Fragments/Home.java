@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,6 +32,10 @@ import com.loftysys.starbites.Extras.GPSManager;
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Activities.SplashScreen;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
+import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -42,6 +47,49 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class Home extends Fragment implements LocationListener {
+
+    public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
+
+        private Context context;
+        private List<String> items;
+
+        public SliderAdapterExample(Context context,List<String> items) {
+            this.context = context;
+            this.items=items;
+        }
+
+        @Override
+        public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
+            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.slider_item, null);
+            return new SliderAdapterVH(inflate);
+        }
+
+        @Override
+        public void onBindViewHolder(SliderAdapterVH viewHolder, int position) {
+            Picasso.with(context)
+                    .load(items.get(position))
+                    .placeholder(R.drawable.item_not_added)
+                    .into(viewHolder.imageViewBackground);
+        }
+
+        @Override
+        public int getCount() {
+            //slider view count could be dynamic size
+            return items.size();
+        }
+
+        class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+
+            View itemView;
+            ImageView imageViewBackground;
+
+            public SliderAdapterVH(View itemView) {
+                super(itemView);
+                imageViewBackground = itemView.findViewById(R.id.imageview);
+                this.itemView = itemView;
+            }
+        }
+    }
 
     View view;
     @BindView(R.id.recommendedItemsRecyclerView)
@@ -62,7 +110,8 @@ public class Home extends Fragment implements LocationListener {
     CardView cardView;
     @BindView(R.id.txtRecommended)
     TextView txtRecommended;
-
+    @BindView(R.id.imageSlider)
+    com.smarteist.autoimageslider.SliderView imageSlider;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,9 +123,24 @@ public class Home extends Fragment implements LocationListener {
         setRestaurantDetails();
         setRecommendedItemsData();
         setCategoriesData();
+        setSlider();
         return view;
     }
 
+    private void setSlider() {
+        List<String> images = SplashScreen.restaurantDetailResponseData.getImages();
+        Log.d("IMAGES",images.toString());
+        SliderAdapterExample adapter = new SliderAdapterExample(getActivity(),images);
+        SliderView sliderView = imageSlider;
+        sliderView.setSliderAdapter(adapter);
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+        sliderView.setIndicatorSelectedColor(Color.WHITE);
+        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+        sliderView.setScrollTimeInSec(30); //set scroll delay in seconds :
+        sliderView.startAutoCycle();
+    }
     private void call() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + SplashScreen.restaurantDetailResponseData.getPhone()));

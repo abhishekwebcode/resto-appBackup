@@ -151,62 +151,65 @@ public class ChoosePaymentMethod extends Fragment {
 
     @OnClick({R.id.addNewAddress, R.id.makePayment, R.id.fillAddress})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.addNewAddress:
-                addNewAddressLayout.setVisibility(View.VISIBLE);
-                addressCheckBox.setChecked(false);
-                addNewAddress.setText("Use This Address");
-                break;
-            case R.id.makePayment:
-                if (!addressCheckBox.isChecked()) {
-                    if (addNewAddressLayout.getVisibility() == View.VISIBLE) {
-                        if (validate(editTexts.get(0))
-                                && validate(editTexts.get(1))
-                                && validate(editTexts.get(2))
-                                && validate(editTexts.get(3))
-                                && validate(editTexts.get(4))
-                                && validatePinCode(editTexts.get(5))
-                                && validate(editTexts.get(6))) {
-                            String s = "";
-                            if (editTexts.get(6).getText().toString().trim().length() > 0) {
-                                s = ", " + editTexts.get(6).getText().toString().trim();
+        try {
+            switch (view.getId()) {
+                case R.id.addNewAddress:
+                    addNewAddressLayout.setVisibility(View.VISIBLE);
+                    addressCheckBox.setChecked(false);
+                    addNewAddress.setText("Use This Address");
+                    break;
+                case R.id.makePayment:
+                    if (!addressCheckBox.isChecked()) {
+                        if (addNewAddressLayout.getVisibility() == View.VISIBLE) {
+                            if (validate(editTexts.get(0))
+                                    && validate(editTexts.get(1))
+                                    && validate(editTexts.get(2))
+                                    && validate(editTexts.get(3))
+                                    && validate(editTexts.get(4))
+                                    && validatePinCode(editTexts.get(5))
+                                    && validate(editTexts.get(6))) {
+                                String s = "";
+                                if (editTexts.get(6).getText().toString().trim().length() > 0) {
+                                    s = ", " + editTexts.get(6).getText().toString().trim();
+                                }
+                                address = editTexts.get(0).getText().toString().trim()
+                                        + ", "
+                                        + editTexts.get(4).getText().toString().trim()
+                                        + s
+                                        + ", " + editTexts.get(3).getText().toString().trim()
+                                        + ", " + editTexts.get(2).getText().toString().trim()
+                                        + ", " + editTexts.get(6).getText().toString().trim()
+                                        + ", " + editTexts.get(5).getText().toString().trim()
+                                        + "\n" + editTexts.get(1).getText().toString().trim();
+                                mobileNo = editTexts.get(1).getText().toString().trim();
+                                Log.i("NO", "NO ERROR IN DATA");
+                                moveNext();
                             }
-                            address = editTexts.get(0).getText().toString().trim()
-                                    + ", "
-                                    + editTexts.get(4).getText().toString().trim()
-                                    + s
-                                    + ", " + editTexts.get(3).getText().toString().trim()
-                                    + ", " + editTexts.get(2).getText().toString().trim()
-                                    + ", " + editTexts.get(6).getText().toString().trim()
-                                    + ", " + editTexts.get(5).getText().toString().trim()
-                                    + "\n" + editTexts.get(1).getText().toString().trim();
-                            mobileNo = editTexts.get(1).getText().toString().trim();
-                            Log.i("NO","NO ERROR IN DATA");
-                            moveNext();
+                        } else {
+                            Config.showCustomAlertDialog(getActivity(),
+                                    "Please choose your saved address or add new to make payment",
+                                    "",
+                                    SweetAlertDialog.ERROR_TYPE);
                         }
                     } else {
-                        Config.showCustomAlertDialog(getActivity(),
-                                "Please choose your saved address or add new to make payment",
-                                "",
-                                SweetAlertDialog.ERROR_TYPE);
-                    }
-                } else {
-                    if (SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()))
-                        moveNext();
-                    else {
-                        Config.showPincodeCustomAlertDialog1(getActivity(),
-                                "Not Available",
-                                "We have stopped food delivery in your area. Please change your pincode.",
-                                SweetAlertDialog.WARNING_TYPE);
+                        if (SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()))
+                            moveNext();
+                        else {
+                            Config.showPincodeCustomAlertDialog1(getActivity(),
+                                    "Not Available",
+                                    "We have stopped food delivery in your area. Please change your pincode.",
+                                    SweetAlertDialog.WARNING_TYPE);
 
+                        }
                     }
-                }
 
-                break;
-            case R.id.fillAddress:
-                ((MainActivity) getActivity()).loadFragment(new MyProfile(), true);
-                break;
-        }
+                    break;
+                case R.id.fillAddress:
+                    ((MainActivity) getActivity()).loadFragment(new MyProfile(), true);
+                    break;
+            }
+        } catch (Throwable e ){e.printStackTrace();
+            Toast.makeText(getActivity(), "Please check all details carefully", Toast.LENGTH_SHORT).show();}
 
     }
     protected void hideKeyboard(View view)
@@ -247,6 +250,7 @@ public class ChoosePaymentMethod extends Fragment {
                         }
                         System.out.println("GOING TO MAIN ACTIVITY");
                         Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                        intent.putExtra("Delivery",((MainActivity)getActivity()).deliveryType);
                         getActivity().startActivity(intent);
                         ((Activity) getActivity()).finishAffinity();
                     }
@@ -304,6 +308,7 @@ public class ChoosePaymentMethod extends Fragment {
                                     }
                                     System.out.println("GOING TO MAIN ACTIVITY");
                                     Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                                    intent.putExtra("Delivery",((MainActivity)getActivity()).deliveryType);
                                     getActivity().startActivity(intent);
                                     ((Activity) getActivity()).finishAffinity();
                                 }

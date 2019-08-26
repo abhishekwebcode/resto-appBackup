@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 
 import com.loftysys.starbites.Activities.MainActivity;
@@ -18,13 +19,21 @@ public class OrderConfirmed extends AppCompatActivity {
 
     @BindView(R.id.continueShopping)
     Button continueShopping;
-
+    @BindView(R.id.order_confirmed)
+    ImageView orderConfirmed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirmed);
         ButterKnife.bind(this);
-    }
+        if (getIntent().hasExtra("Delivery")) {
+            if (getIntent().getStringExtra("Delivery").equals("Delivery")) {
+                orderConfirmed.setImageResource(R.drawable.delivery_sucess_icon);
+            } else {
+                orderConfirmed.setImageResource(R.drawable.dine_in_takeout_sucess_icon);
+            }
+        }
+        }
 
     @OnClick(R.id.continueShopping)
     public void onClick(View view) {

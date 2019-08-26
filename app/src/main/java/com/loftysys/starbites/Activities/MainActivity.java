@@ -49,13 +49,12 @@ public class MainActivity extends AppCompatActivity {
     public String deliveryType=null;
     public String tableNumber=null;
     public String branch=null;
-
     public static ImageView menu, back, cart,search;
     public static DrawerLayout drawerLayout;
     public static TextView title, cartCount;
     boolean doubleBackToExitPressedOnce = false;
     public static ProgressBar progressBar;
-    public static String currency="$", userId;
+    public static String currency="GH₵", userId;
     public static LinearLayout toolbarContainer;
     String from;
 
@@ -273,14 +272,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getCurrency() {
-        try {
-            if (SplashScreen.restaurantDetailResponseData.getCurrency().equalsIgnoreCase("USD"))
-                currency = "$";
-            else
-                currency = "₹";
-        } catch (Exception e) {
-            Log.d("currencyError",e.toString());
-        }
+        currency="GH₵";
     }
 
     public void removeCurrentFragmentAndMoveBack() {

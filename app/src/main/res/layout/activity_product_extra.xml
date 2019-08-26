@@ -38,7 +38,7 @@
             android:layout_below="@+id/dialogProductName"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/productImage"
-            android:text="$"
+            android:text="GH₵"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -137,7 +137,7 @@
             android:layout_toLeftOf="@+id/totalAmount"
             android:layout_below="@+id/recyclerView"
             android:layout_marginTop="20dp"
-            android:text="$ "
+            android:text="GH₵ "
             android:textColor="@color/black"
             android:textSize="16sp" />
         <TextView

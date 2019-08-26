@@ -91,7 +91,7 @@ public class SearchProductListAdapter extends RecyclerView.Adapter<SearchProduct
     @Override
     public void onBindViewHolder(final MyWishListViewHolder holder, final int position) {
 
-        //holder.currency.setText("$");
+        //holder.currency.setText("GH₵");
         holder.currency.setText(MainActivity.currency);
         Log.d("posIS", selectedList + "");
         holder.price.setText(productList.get(position).getVariants().get(selectedList.get(position)).getVarprice());

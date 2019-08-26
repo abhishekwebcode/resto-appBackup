@@ -69,7 +69,7 @@
                     android:layout_marginTop="7dp"
                     android:layout_toRightOf="@+id/quantity"
                     android:maxLines="3"
-                    android:text="$ "
+                    android:text="GH₵ "
                     android:textColor="@color/black"
                     android:textSize="12sp" />
                 <TextView
@@ -80,7 +80,7 @@
                     android:layout_marginTop="7dp"
                     android:layout_toRightOf="@+id/currency"
                     android:maxLines="3"
-                    android:text="$6,999"
+                    android:text="GH₵6,999"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -202,7 +202,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/divider1"
                     android:layout_marginTop="10dp"
-                    android:text="$346"
+                    android:text="GH₵346"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -251,7 +251,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txtDelivery"
                     android:layout_marginTop="10dp"
-                    android:text="Tax"
+                    android:text="Service Fee"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -292,7 +292,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/dotLine"
                     android:layout_marginTop="10dp"
-                    android:text="$356"
+                    android:text="GH₵356"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </RelativeLayout>

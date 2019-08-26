@@ -31,7 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
         android:gravity="center_vertical"
-        android:text="$ 200"
+        android:text="GH₵ 200"
         android:textColor="@color/black"
         android:textSize="14sp" />
 

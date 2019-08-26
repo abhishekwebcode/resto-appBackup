@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/quantityLayout"
             android:layout_alignParentRight="true"
-            android:text="$ 100"
+            android:text="GH₵ 100"
             android:textColor="@color/black"
             android:textSize="16sp" />
 

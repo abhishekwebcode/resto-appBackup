@@ -62,7 +62,7 @@ public class MyOrderedProductsDetailPage extends Fragment {
             setState(orderes.get(pos).getStatuscode());
         }
         if (orderes.get(pos).getCurrency().equalsIgnoreCase("USD"))
-            currency = "$";
+            currency = "GH₵";
         else
             currency = "₹";
         textViews.get(0).setText(orderes.get(pos).getOrderid());

@@ -11,6 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +130,7 @@ public class MyCartList extends Fragment {
         final View dialogView = inflater.inflate(R.layout.select_table, null);
         dialogBuilder.setView(dialogView);
 
-        AutoCompleteTextView editText = (AutoCompleteTextView) dialogView.findViewById(R.id.autoCompleteTextView);
+        final AutoCompleteTextView editText = (AutoCompleteTextView) dialogView.findViewById(R.id.autoCompleteTextView);
         Log.i("YDFG", "showTableSelector: "+Converter.Table.getTableLi(tables).toString());
         final ArrayAdapter adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line, Converter.Table.getTableLi(tables) );
         editText.setAdapter(adapter );
@@ -141,6 +143,28 @@ public class MyCartList extends Fragment {
                 alertDialog.dismiss();
                 tableNumber=tables.get(pos).id;
                 deliveryType="Dine-In";
+            }
+        });
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) editText.showDropDown();
+            }
+        });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                editText.showDropDown();
             }
         });
         adapter.setNotifyOnChange(true);
