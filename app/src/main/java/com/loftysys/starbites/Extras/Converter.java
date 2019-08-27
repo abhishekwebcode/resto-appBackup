@@ -10,6 +10,31 @@ import java.util.List;
 import retrofit.client.Response;
 
 public class Converter {
+
+    public static class pin {
+        @Override
+        public String toString() {
+            return pincode;
+        }
+
+        public String id="";
+        public String pincode="";
+        public pin(String a ,String b){
+            this.id=a;
+            this.pincode=b;
+        }
+        public static List<pin> getPins(JSONArray array)throws Exception {
+            ArrayList<pin> pins = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                pins.add(new pin(
+                        array.getJSONObject(i).getString("id"),
+                        array.getJSONObject(i).getString("pincode")
+                ));
+            }
+            return pins;
+        }
+    }
+
     public static String  getString(Response response) throws Exception {
         BufferedReader r = new BufferedReader(new InputStreamReader(response.getBody().in()));
         StringBuilder total = new StringBuilder();

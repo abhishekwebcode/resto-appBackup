@@ -64,7 +64,7 @@ public class PayPalActivityPayment extends AppCompatActivity {
                         if (jsonObject.getJSONObject("response").getString("state").equalsIgnoreCase("approved")) {
                             Config.addOrder(PayPalActivityPayment.this,
                                     jsonObject.getJSONObject("response").getString("id"),
-                                    "PayPal Payment-Gateway");
+                                    "PayPal Payment-Gateway","");
                         } else {
                             new SweetAlertDialog(PayPalActivityPayment.this)
                                     .setTitleText("Payment Failed")

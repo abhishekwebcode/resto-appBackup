@@ -224,7 +224,38 @@
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="10dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/txtAmountPayable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dotLine"
+                        android:layout_marginTop="10dp"
+                        android:text="Amount Payable"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/amountPayable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/dotLine"
+                        android:layout_marginTop="10dp"
+                        android:text="GH₵-1"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -255,7 +286,7 @@
                             android:id="@+id/asoriba"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Pay Using Asoriba" />
+                            android:text="Pay Using Hubtel" />
 
                         <RadioButton
                             android:id="@+id/voucher"
@@ -295,6 +326,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 

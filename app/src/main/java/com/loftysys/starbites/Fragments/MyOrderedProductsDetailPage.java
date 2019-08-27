@@ -61,10 +61,7 @@ public class MyOrderedProductsDetailPage extends Fragment {
             orderStateLayout.setVisibility(View.VISIBLE);
             setState(orderes.get(pos).getStatuscode());
         }
-        if (orderes.get(pos).getCurrency().equalsIgnoreCase("USD"))
-            currency = "GH₵";
-        else
-            currency = "₹";
+        currency = "GH₵";
         textViews.get(0).setText(orderes.get(pos).getOrderid());
         textViews.get(1).setText(orderes.get(pos).getOrderdate());
         textViews.get(3).setText(orderes.get(pos).getPaymode());

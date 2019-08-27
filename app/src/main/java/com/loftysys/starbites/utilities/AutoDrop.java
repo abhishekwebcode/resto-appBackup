@@ -37,4 +37,14 @@ public class AutoDrop extends AppCompatAutoCompleteTextView {
             }
             return ic;
         }
+
+    @Override
+    public int getThreshold() {
+        return 0;
     }
+
+    @Override
+    public boolean enoughToFilter() {
+        return true;
+    }
+}

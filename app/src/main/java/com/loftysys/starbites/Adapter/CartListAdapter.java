@@ -43,8 +43,13 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     ArrayList<Converter.Branch> branches;
     double tax = 0f;
     MyCartList reference;
+    String total;
 
-    public CartListAdapter(Context context, List<CartProducts> cartProducts, ArrayList<Converter.Branch> branches,MyCartList myCartList) {
+    public  String getTotalAmountPayable() {
+        return total;
+    }
+
+    public CartListAdapter(Context context, List<CartProducts> cartProducts, ArrayList<Converter.Branch> branches, MyCartList myCartList) {
         this.context = context;
         this.cartProducts = cartProducts;
         totalAmount = 0f;
@@ -134,13 +139,14 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             }
             if (MyCartList.cartistResponseData.getTax().length() > 0) {
                 tax = (totalAmount / 100) * Double.parseDouble(MyCartList.cartistResponseData.getTax());
-                holder.textViews.get(5).setText("Tax (" + MyCartList.cartistResponseData.getTax() + "%)");
+                holder.textViews.get(5).setText("Service Fee (" + MyCartList.cartistResponseData.getTax() + "%)");
             }
             tax = Double.parseDouble(String.format("%.2f", tax));
             Log.d("floatTax", tax + "");
             holder.textViews.get(3).setText(MainActivity.currency + " " + String.format("%.2f",tax));
             holder.textViews.get(4).setText(MainActivity.currency + " " + (String.format("%.2f", (amountPayable + tax))));
             totalAmountPayable = (String.format("%.2f", (amountPayable + tax)));
+            total=totalAmountPayable;
             Log.d("totalAmountPayable", totalAmountPayable);
         } else
             holder.totalAmount.setVisibility(View.GONE);

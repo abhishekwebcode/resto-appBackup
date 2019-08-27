@@ -113,6 +113,9 @@ public interface ApiInterface {
     public void getUserProfile(@Field("user_id") String user_id, Callback<UserProfileResponse> callback);
 
 
+    @GET("/all_location.php")
+    public void getPinCodes(Callback<Response> callback);
+
     @FormUrlEncoded
     @POST("/updateprofile.php")
     public void updateProfile(@Field("user_id") String user_id,

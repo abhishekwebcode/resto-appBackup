@@ -40,6 +40,7 @@ import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
 import com.loftysys.starbites.Activities.SignUp;
 import com.loftysys.starbites.Activities.SplashScreen;
+import com.loftysys.starbites.utilities.AutoDrop;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,6 +79,8 @@ public class MyCartList extends Fragment {
     LinearLayout loginLayout;
     @BindView(R.id.continueShopping)
     Button continueShopping;
+    CartListAdapter wishListAdapter;
+
 
     @BindView(R.id.verifyEmailLayout)
     LinearLayout verifyEmailLayout;
@@ -110,13 +113,6 @@ public class MyCartList extends Fragment {
 
     public void showTableSelector() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismissDialog();
-                dialog.dismiss();
-            }
-        });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -125,50 +121,25 @@ public class MyCartList extends Fragment {
             }
         });
         dialogBuilder.setCancelable(false);
-// ...Irrelevant code for customizing the buttons and title
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.select_table, null);
-        dialogBuilder.setView(dialogView);
-
-        final AutoCompleteTextView editText = (AutoCompleteTextView) dialogView.findViewById(R.id.autoCompleteTextView);
+        //LayoutInflater inflater = this.getLayoutInflater();
+        //final View dialogView = inflater.inflate(R.layout.select_table, null);
+        //dialogBuilder.setView(dialogView);
+        //final AutoDrop editText = (AutoDrop) dialogView.findViewById(R.id.autoCompleteTextView);
         Log.i("YDFG", "showTableSelector: "+Converter.Table.getTableLi(tables).toString());
         final ArrayAdapter adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line, Converter.Table.getTableLi(tables) );
-        editText.setAdapter(adapter );
-        final AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-        editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                alertDialog.dismiss();
-                tableNumber=tables.get(pos).id;
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                tableNumber=tables.get(which).id;
                 deliveryType="Dine-In";
             }
         });
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) editText.showDropDown();
-            }
-        });
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                editText.showDropDown();
-            }
-        });
-        adapter.setNotifyOnChange(true);
-        editText.setThreshold(1);alertDialog.show();
+        //editText.setAdapter(adapter);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
 
     }
     public void setAllNulls() {
@@ -214,6 +185,7 @@ public class MyCartList extends Fragment {
                     ((MainActivity) getActivity()).deliveryType=deliveryType;
                     ((MainActivity) getActivity()).branch=branch;
                     ((MainActivity) getActivity()).tableNumber=tableNumber;
+                    ((MainActivity) getActivity()).totalAmountPayable=wishListAdapter.getTotalAmountPayable();
                     ((MainActivity) getActivity()).loadFragment(new ChoosePaymentMethod(), true);
                 }
                 else
@@ -356,7 +328,7 @@ public class MyCartList extends Fragment {
     }
 
     private void setProductsData() {
-        CartListAdapter wishListAdapter;
+
         GridLayoutManager gridLayoutManager;
         gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         productsRecyclerView.setLayoutManager(gridLayoutManager);

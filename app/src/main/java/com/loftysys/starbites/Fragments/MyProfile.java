@@ -1,7 +1,9 @@
 package com.loftysys.starbites.Fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -9,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,6 +24,7 @@ import com.loftysys.starbites.Activities.AccountVerification;
 import com.loftysys.starbites.Extras.Common;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Activities.Login;
+import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
 import com.loftysys.starbites.Activities.MainActivity;
@@ -27,6 +32,9 @@ import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
 import com.loftysys.starbites.Activities.SignUp;
 import com.loftysys.starbites.Activities.SplashScreen;
+import com.loftysys.starbites.utilities.AutoDrop;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -37,13 +45,14 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
+import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MyProfile extends Fragment {
 
     View view;
-    @BindViews({R.id.fullNameEdt, R.id.mobEditText, R.id.cityEditText, R.id.areaEditText, R.id.buildingEditText, R.id.pincodeEditText, R.id.stateEditText, R.id.landmarkEditText,})
+    @BindViews({R.id.fullNameEdt, R.id.mobEditText, R.id.cityEditText, R.id.areaEditText, R.id.buildingEditText, R.id.pincodeEditText1, R.id.stateEditText, R.id.landmarkEditText,})
     List<EditText> editTexts;
     UserProfileResponse userProfileResponseData;
     @BindView(R.id.submitBtn)
@@ -57,13 +66,17 @@ public class MyProfile extends Fragment {
     LinearLayout loginLayout;
     @BindView(R.id.logout)
     Button logout;
-
+    @BindView(R.id.pincodeEditText)
+    AutoDrop pincode;
     @BindView(R.id.verifyEmailLayout)
     LinearLayout verifyEmailLayout;
+    List<Converter.pin> pins;
+    ArrayAdapter<Converter.pin> adapter;
+    String id ;
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_my_profile, container, false);
         ButterKnife.bind(this, view);
@@ -89,13 +102,56 @@ public class MyProfile extends Fragment {
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public void dismissDialog(){}
+
+    public void showPincodeSelector() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dismissDialog();
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.setCancelable(false);
+        //LayoutInflater inflater = this.getLayoutInflater();
+        //final View dialogView = inflater.inflate(R.layout.select_table, null);
+        //dialogBuilder.setView(dialogView);
+        //final AutoDrop editText = (AutoDrop) dialogView.findViewById(R.id.autoCompleteTextView);
+        dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                pincode.setText(adapter.getItem(which).pincode);
+                id=adapter.getItem(which).id;
+            }
+        });
+        //editText.setAdapter(adapter);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+    }
+
     private void setUserProfileData() {
         editTexts.get(0).setText(userProfileResponseData.getName());
         editTexts.get(1).setText(userProfileResponseData.getMobile());
         editTexts.get(2).setText(userProfileResponseData.getCity());
         editTexts.get(3).setText(userProfileResponseData.getLocality());
         editTexts.get(4).setText(userProfileResponseData.getFlat());
-        editTexts.get(5).setText(userProfileResponseData.getPincode());
+        adapter=new ArrayAdapter<Converter.pin>(getActivity(),android.R.layout.simple_dropdown_item_1line,pins);
+        pincode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPincodeSelector();
+            }
+        });
+        //pincode.setText(userProfileResponseData.getPincode());
+        //pincode.setAdapter();
+        //editTexts.get(5).setText();
+        pincode.setText(userProfileResponseData.getPincode());
+        id=(userProfileResponseData.getPincode());
         editTexts.get(6).setText(userProfileResponseData.getState());
         editTexts.get(7).setText(userProfileResponseData.getLandmark());
         try {
@@ -104,13 +160,12 @@ public class MyProfile extends Fragment {
                 circleImageViews.get(1).setImageResource(R.drawable.female_select);
                 gender = "female";
             } else if (userProfileResponseData.getGender().equalsIgnoreCase("male")) {
-
                 circleImageViews.get(0).setImageResource(R.drawable.male_select);
                 circleImageViews.get(1).setImageResource(R.drawable.female_unselect);
                 gender = "male";
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -136,8 +191,16 @@ public class MyProfile extends Fragment {
                         && validate(editTexts.get(2))
                         && validate(editTexts.get(3))
                         && validate(editTexts.get(4))
-                        && validatePinCode(editTexts.get(5))
+                        //&& validatePinCode(editTexts.get(5))
                         && validate(editTexts.get(6))) {
+                    String pinText =pincode.getText().toString();
+                    Boolean acceptPincode = false;
+                    for (int i = 0; i < pins.size(); i++) {
+                        if (pins.get(i).pincode.equals(pinText)) acceptPincode=true;
+                    }
+                    if (!acceptPincode) {
+                        Toast.makeText(getActivity(), "Please select a valid location", Toast.LENGTH_SHORT).show();
+                    }
                     updateProfile();
                 }
                 break;
@@ -226,31 +289,51 @@ public class MyProfile extends Fragment {
         pDialog.setTitleText("Loading");
         pDialog.setCancelable(false);
         pDialog.show();
-        Api.getClient().getUserProfile(
-                MainActivity.userId, new Callback<UserProfileResponse>() {
-                    @Override
-                    public void success(UserProfileResponse userProfileResponse, Response response) {
-                        pDialog.dismiss();
-                        try {
-                            userProfileResponseData = userProfileResponse;
-                            if (userProfileResponse.getSuccess().equalsIgnoreCase("false")) {
-                                profileLayout.setVisibility(View.INVISIBLE);
-                                verifyEmailLayout.setVisibility(View.VISIBLE);
-                            } else
-                                setUserProfileData();
-                        } catch (Exception e) {
-                            Log.d("profileResponse", "NULL");
+
+        Api.getClient().getPinCodes(new ResponseCallback() {
+            @Override
+            public void success(Response response) {
+                try {
+                    pins=Converter.pin.getPins(new JSONArray(Converter.getString(response)));
+                    Api.getClient().getUserProfile(MainActivity.userId, new Callback<UserProfileResponse>() {
+                        @Override
+                        public void success(UserProfileResponse userProfileResponse, Response response) {
+                            pDialog.dismiss();
+                            try {
+                                userProfileResponseData = userProfileResponse;
+                                if (userProfileResponse.getSuccess().equalsIgnoreCase("false")) {
+                                    profileLayout.setVisibility(View.INVISIBLE);
+                                    verifyEmailLayout.setVisibility(View.VISIBLE);
+                                } else
+                                    setUserProfileData();
+                            } catch (Exception e) {
+                                pDialog.dismiss();
+                                Log.d("profileResponse", "NULL");
+                            }
+
+
                         }
 
+                        @Override
+                        public void failure(RetrofitError error) {
+                            pDialog.dismiss();
 
-                    }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    pDialog.dismiss();
+                }
+            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        pDialog.dismiss();
+            @Override
+            public void failure(RetrofitError error) {
+                pDialog.dismiss();
+                Toast.makeText(getActivity(), "Cannot load your profile", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                    }
-                });
+
     }
 
     public void updateProfile() {
@@ -259,12 +342,13 @@ public class MyProfile extends Fragment {
         pDialog.setTitleText("Loading");
         pDialog.setCancelable(false);
         pDialog.show();
+        //editTexts.get(5).getText().toString().trim(),
         Api.getClient().updateProfile(
                 MainActivity.userId,
                 editTexts.get(0).getText().toString().trim(),
                 editTexts.get(2).getText().toString().trim(),
                 editTexts.get(6).getText().toString().trim(),
-                editTexts.get(5).getText().toString().trim(),
+                id,
                 editTexts.get(3).getText().toString().trim(),
                 editTexts.get(4).getText().toString().trim(),
                 gender,

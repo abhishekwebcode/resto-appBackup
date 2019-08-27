@@ -35,7 +35,7 @@
                     android:scaleType="fitXY" />
                 <com.smarteist.autoimageslider.SliderView
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="250dp"
                     android:id="@+id/imageSlider"
                     app:sliderAnimationDuration="600"
                     app:sliderAutoCycleDirection="right"

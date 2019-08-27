@@ -86,6 +86,9 @@ public class ChoosePaymentMethod extends Fragment {
     public static String address, mobileNo,userEmail,profilePinCode;
     Intent intent;
     Boolean isVoucherDone=false;
+    @BindView(R.id.amountPayable)
+    TextView amountPayable;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +101,8 @@ public class ChoosePaymentMethod extends Fragment {
         MainActivity.cart.setVisibility(GONE);
         MainActivity.cartCount.setVisibility(GONE);
         getUserProfileData();
+        String total = ((MainActivity) getActivity()).totalAmountPayable;
+        amountPayable.setText(MainActivity.currency+total);
         addressCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -192,7 +197,8 @@ public class ChoosePaymentMethod extends Fragment {
                                     SweetAlertDialog.ERROR_TYPE);
                         }
                     } else {
-                        if (SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()))
+                        //TODO  CHECK HERE for migration
+                        if (true || SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()) )
                             moveNext();
                         else {
                             Config.showPincodeCustomAlertDialog1(getActivity(),
@@ -230,10 +236,10 @@ public class ChoosePaymentMethod extends Fragment {
                 MyCartList.cartistResponseData.getCartid(),
                 ChoosePaymentMethod.address,
                 ChoosePaymentMethod.mobileNo,
-                "Arisoba Payment for user "+MainActivity.userId,
+                "Hubtel Payment for user "+MainActivity.userId,
                 "Pending",
                 CartListAdapter.totalAmountPayable,
-                "Arisoba",
+                "Hubtel",
                 reference.deliveryType==null?"":reference.deliveryType,
                 "-1",
                 reference.branch==null?"":reference.branch,
@@ -331,7 +337,7 @@ public class ChoosePaymentMethod extends Fragment {
                 paymentMethod = "cod";
                 Config.addOrder(getActivity(),
                         "COD",
-                        "COD");
+                        "COD",((MainActivity)getActivity()).deliveryType);
                 break;
             case R.id.satellite:
                 //paypal was here

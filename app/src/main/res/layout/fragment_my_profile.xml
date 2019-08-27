@@ -151,7 +151,7 @@
 
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/relativeLayout21"
+                    android:id="@+id/relativeLayout2"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dp">
@@ -163,9 +163,9 @@
                         android:layout_height="wrap_content"
                         android:hint="Your Location *"
                         android:imeOptions="actionNext"
-                        android:inputType="number"
                         android:paddingLeft="6dp"
                         android:singleLine="true"
+                        android:editable="false"
                         android:textSize="14sp" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -323,6 +323,11 @@
                 android:text="Verify Now"
                 android:textColor="@color/white" />
 
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/pincodeEditText1"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
 
         </LinearLayout>
     </RelativeLayout>

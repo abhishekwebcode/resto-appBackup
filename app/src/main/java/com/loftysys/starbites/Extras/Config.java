@@ -184,7 +184,7 @@ public class Config {
         });
     }
 
-    public static void addOrder(final Context context, String transactionId, String paymentMode) {
+    public static void addOrder(final Context context, String transactionId, String paymentMode, final String deliveryType) {
         final SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(context.getResources().getColor(R.color.colorPrimary));
         pDialog.setTitleText("Loading");
@@ -204,6 +204,7 @@ public class Config {
                     public void success(SignUpResponse signUpResponse, Response response) {
                         pDialog.dismiss();
                         Intent intent = new Intent(context, OrderConfirmed.class);
+                        intent.putExtra("Delivery",deliveryType);
                         context.startActivity(intent);
                         ((Activity) context).finishAffinity();
                     }

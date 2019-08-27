@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public static String currency="GH₵", userId;
     public static LinearLayout toolbarContainer;
     String from;
+    public String totalAmountPayable = "-1";
 
     @BindView(R.id.navigationView)
     NavigationView navigationView;
