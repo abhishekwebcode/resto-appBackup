@@ -1,5 +1,7 @@
 package com.loftysys.starbites.Extras;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.client.Response;
+
 
 public class Converter {
 
@@ -42,6 +45,13 @@ public class Converter {
             total.append(line);
         }
         return total.toString();
+    }
+    public static void logResponse(Response response) {
+        try {
+            Log.d("LOG CONVERTER",getString(response));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     static public class Table {
         public String id;

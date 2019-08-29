@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,19 +18,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
 import com.loftysys.starbites.Activities.AccountVerification;
+import com.loftysys.starbites.Activities.Login;
+import com.loftysys.starbites.Activities.MainActivity;
+import com.loftysys.starbites.Activities.SignUp;
+import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Extras.Common;
 import com.loftysys.starbites.Extras.Config;
-import com.loftysys.starbites.Activities.Login;
 import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
-import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
-import com.loftysys.starbites.Activities.SignUp;
-import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.utilities.AutoDrop;
 
 import org.json.JSONArray;
@@ -72,7 +70,7 @@ public class MyProfile extends Fragment {
     LinearLayout verifyEmailLayout;
     List<Converter.pin> pins;
     ArrayAdapter<Converter.pin> adapter;
-    String id ;
+    String id;
 
 
     @Override
@@ -102,7 +100,8 @@ public class MyProfile extends Fragment {
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public void dismissDialog(){}
+    public void dismissDialog() {
+    }
 
     public void showPincodeSelector() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
@@ -123,7 +122,7 @@ public class MyProfile extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 pincode.setText(adapter.getItem(which).pincode);
-                id=adapter.getItem(which).id;
+                id = adapter.getItem(which).pincode;
             }
         });
         //editText.setAdapter(adapter);
@@ -140,7 +139,7 @@ public class MyProfile extends Fragment {
         editTexts.get(2).setText(userProfileResponseData.getCity());
         editTexts.get(3).setText(userProfileResponseData.getLocality());
         editTexts.get(4).setText(userProfileResponseData.getFlat());
-        adapter=new ArrayAdapter<Converter.pin>(getActivity(),android.R.layout.simple_dropdown_item_1line,pins);
+        adapter = new ArrayAdapter<Converter.pin>(getActivity(), android.R.layout.simple_dropdown_item_1line, pins);
         pincode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,8 +149,9 @@ public class MyProfile extends Fragment {
         //pincode.setText(userProfileResponseData.getPincode());
         //pincode.setAdapter();
         //editTexts.get(5).setText();
+        //Toast.makeText(getActivity(), "Pin "+userProfileResponseData.getPincode(), Toast.LENGTH_SHORT).show();
         pincode.setText(userProfileResponseData.getPincode());
-        id=(userProfileResponseData.getPincode());
+        id = (userProfileResponseData.getPincode());
         editTexts.get(6).setText(userProfileResponseData.getState());
         editTexts.get(7).setText(userProfileResponseData.getLandmark());
         try {
@@ -193,10 +193,10 @@ public class MyProfile extends Fragment {
                         && validate(editTexts.get(4))
                         //&& validatePinCode(editTexts.get(5))
                         && validate(editTexts.get(6))) {
-                    String pinText =pincode.getText().toString();
+                    String pinText = pincode.getText().toString();
                     Boolean acceptPincode = false;
                     for (int i = 0; i < pins.size(); i++) {
-                        if (pins.get(i).pincode.equals(pinText)) acceptPincode=true;
+                        if (pins.get(i).pincode.equals(pinText)) acceptPincode = true;
                     }
                     if (!acceptPincode) {
                         Toast.makeText(getActivity(), "Please select a valid location", Toast.LENGTH_SHORT).show();
@@ -294,7 +294,7 @@ public class MyProfile extends Fragment {
             @Override
             public void success(Response response) {
                 try {
-                    pins=Converter.pin.getPins(new JSONArray(Converter.getString(response)));
+                    pins = Converter.pin.getPins(new JSONArray(Converter.getString(response)));
                     Api.getClient().getUserProfile(MainActivity.userId, new Callback<UserProfileResponse>() {
                         @Override
                         public void success(UserProfileResponse userProfileResponse, Response response) {
@@ -348,7 +348,7 @@ public class MyProfile extends Fragment {
                 editTexts.get(0).getText().toString().trim(),
                 editTexts.get(2).getText().toString().trim(),
                 editTexts.get(6).getText().toString().trim(),
-                id,
+                Integer.parseInt(id),
                 editTexts.get(3).getText().toString().trim(),
                 editTexts.get(4).getText().toString().trim(),
                 gender,

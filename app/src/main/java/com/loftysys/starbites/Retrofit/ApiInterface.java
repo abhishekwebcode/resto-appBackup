@@ -122,7 +122,7 @@ public interface ApiInterface {
                               @Field("name") String name,
                               @Field("city") String city,
                               @Field("state") String state,
-                              @Field("pincode") String pincode,
+                              @Field("pincode") Integer pincode,
                               @Field("local") String local,
                               @Field("flat") String flat,
                               @Field("gender") String gender,
@@ -181,11 +181,12 @@ public interface ApiInterface {
                          @Field("paystatus") String paystatus,
                          @Field("total") String total,
                          @Field("paymentmode") String paymentmode,
-                         @Field("delivery") String delivery,
+                         @Field("delivery") Integer delivery,
                          @Field("restax") String restax,
-                         @Field("chosen_branch") String chosen_branch,
+                         @Field("choose_branch") String chosen_branch,
                          @Field("chosen_table") String chosen_table,
                          @Field("delivery_method") String delivery_method,
+                         @Field("voucher") String voucher,
                          Callback<SignUpResponse> callback);
 
 

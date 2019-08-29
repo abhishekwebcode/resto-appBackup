@@ -191,6 +191,7 @@ public class ChoosePaymentMethod extends Fragment {
                                 moveNext();
                             }
                         } else {
+                            
                             Config.showCustomAlertDialog(getActivity(),
                                     "Please choose your saved address or add new to make payment",
                                     "",
@@ -231,6 +232,7 @@ public class ChoosePaymentMethod extends Fragment {
         pDialog.show();
 
         MainActivity reference = (MainActivity)getActivity();
+        
 
         Api.getClient().addOrderVoucher(MainActivity.userId,
                 MyCartList.cartistResponseData.getCartid(),
@@ -240,11 +242,12 @@ public class ChoosePaymentMethod extends Fragment {
                 "Pending",
                 CartListAdapter.totalAmountPayable,
                 "Hubtel",
-                reference.deliveryType==null?"":reference.deliveryType,
+                -2,
                 "-1",
                 reference.branch==null?"":reference.branch,
                 reference.tableNumber==null?"":reference.tableNumber,
                 reference.deliveryType==null?"":reference.deliveryType,
+                "",
                 new Callback<SignUpResponse>() {
                     @Override
                     public void success(SignUpResponse signUpResponse, Response response) {
@@ -289,6 +292,7 @@ public class ChoosePaymentMethod extends Fragment {
                     pDialog.show();
 
                     MainActivity reference = (MainActivity)getActivity();
+                    
 
                     Api.getClient().addOrderVoucher(MainActivity.userId,
                             MyCartList.cartistResponseData.getCartid(),
@@ -298,11 +302,12 @@ public class ChoosePaymentMethod extends Fragment {
                             "Complete",
                             CartListAdapter.totalAmountPayable,
                             "Voucher",
-                            reference.deliveryType==null?"":reference.deliveryType,
+                            -2,
                             "-1",
                             reference.branch==null?"":reference.branch,
                             reference.tableNumber==null?"":reference.tableNumber,
                             reference.deliveryType==null?"":reference.deliveryType,
+                            voucher,
                             new Callback<SignUpResponse>() {
                                 @Override
                                 public void success(SignUpResponse signUpResponse, Response response) {
@@ -335,6 +340,8 @@ public class ChoosePaymentMethod extends Fragment {
             case R.id.cod:
                 voucherBox.setVisibility(GONE);
                 paymentMethod = "cod";
+                doCOd();
+                if (true   ) return;
                 Config.addOrder(getActivity(),
                         "COD",
                         "COD",((MainActivity)getActivity()).deliveryType);
@@ -363,6 +370,54 @@ public class ChoosePaymentMethod extends Fragment {
         }
 
     }
+    private void doCOd() {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        MainActivity reference = (MainActivity)getActivity();
+
+        Api.getClient().addOrderVoucher(MainActivity.userId,
+                MyCartList.cartistResponseData.getCartid(),
+                ChoosePaymentMethod.address,
+                ChoosePaymentMethod.mobileNo,
+                "COD Applied for "+MainActivity.userId,
+                "Complete",
+                CartListAdapter.totalAmountPayable,
+                "COD",
+                -2,
+                "-1",
+                reference.branch==null?"":reference.branch,
+                reference.tableNumber==null?"":reference.tableNumber,
+                reference.deliveryType==null?"":reference.deliveryType,
+                voucher,
+                new Callback<SignUpResponse>() {
+                    @Override
+                    public void success(SignUpResponse signUpResponse, Response response) {
+                        pDialog.dismiss();
+                        try {
+                            Log.d("RESPONSE",Converter.getString(response));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("GOING TO MAIN ACTIVITY");
+                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                        intent.putExtra("Delivery",((MainActivity)getActivity()).deliveryType);
+                        getActivity().startActivity(intent);
+                        ((Activity) getActivity()).finishAffinity();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        pDialog.dismiss();
+                        Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
+                        ((Activity) getActivity()).finish();
+                    }
+                });
+    }
+
 
     private boolean validate(EditText editText) {
         if (editText.getText().toString().trim().length() > 0) {
