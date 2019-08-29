@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.loftysys.starbites.Activities.EditCart;
 import com.loftysys.starbites.Extras.Converter;
@@ -44,6 +45,11 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     double tax = 0f;
     MyCartList reference;
     String total;
+    TextView delvieryPrice;
+
+    public void changeDeliveryPriceText(String text) {
+        delvieryPrice.setText(text);
+    }
 
     public  String getTotalAmountPayable() {
         return total;
@@ -60,6 +66,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     @Override
     public CartListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.cart_list_items, null);
+        delvieryPrice=view.findViewById(R.id.delivery);
         CartListViewHolder CartListViewHolder = new CartListViewHolder(context, view, cartProducts);
         return CartListViewHolder;
     }
@@ -117,6 +124,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
 
                 }
             });
+            reference.selectBranch=holder.select_branch;
             holder.select_branch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

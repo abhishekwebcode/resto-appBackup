@@ -121,8 +121,10 @@ public class MyProfile extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                pincode.setText(adapter.getItem(which).pincode);
-                id = adapter.getItem(which).pincode;
+                try {
+                    pincode.setText(adapter.getItem(which).pincode);
+                    id = adapter.getItem(which).pincode;
+                } catch (Throwable e ) {e.printStackTrace();}
             }
         });
         //editText.setAdapter(adapter);
@@ -140,6 +142,12 @@ public class MyProfile extends Fragment {
         editTexts.get(3).setText(userProfileResponseData.getLocality());
         editTexts.get(4).setText(userProfileResponseData.getFlat());
         adapter = new ArrayAdapter<Converter.pin>(getActivity(), android.R.layout.simple_dropdown_item_1line, pins);
+        pincode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) showPincodeSelector();
+            }
+        });
         pincode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,18 +325,21 @@ public class MyProfile extends Fragment {
                         @Override
                         public void failure(RetrofitError error) {
                             pDialog.dismiss();
-
+                            profileLayout.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getActivity(), "Couldn't load your profile", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
                     pDialog.dismiss();
+                    Toast.makeText(getActivity(), "Couldn't fetch your profile", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                pDialog.dismiss();
+                pDialog.dismiss();                            profileLayout.setVisibility(View.INVISIBLE);
+
                 Toast.makeText(getActivity(), "Cannot load your profile", Toast.LENGTH_SHORT).show();
             }
         });
@@ -348,7 +359,7 @@ public class MyProfile extends Fragment {
                 editTexts.get(0).getText().toString().trim(),
                 editTexts.get(2).getText().toString().trim(),
                 editTexts.get(6).getText().toString().trim(),
-                Integer.parseInt(id),
+                id,
                 editTexts.get(3).getText().toString().trim(),
                 editTexts.get(4).getText().toString().trim(),
                 gender,

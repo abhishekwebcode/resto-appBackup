@@ -80,9 +80,11 @@ public class Converter {
     static public class Branch {
         public String id;
         public String name;
-        public Branch(String a,String b) {
+        public String price;
+        public Branch(String a,String b,String c) {
             this.id=a;
             this.name=b;
+            this.price=c;
         }
         public static List<String> getAdapterObject(ArrayList<Branch> branches) {
             ArrayList<String> arrayList = new ArrayList<>();
@@ -96,12 +98,14 @@ public class Converter {
             JSONArray branchesArray = new JSONArray(json);
             ArrayList<Branch> branches = new ArrayList<>();
         branches.add(new Branch(
-           null,"Select Branch"
+           null,"Select Branch","0"
         ));
             for (int i = 0; i < branchesArray.length(); i++) {
                 branches.add(new Branch(
                         branchesArray.getJSONObject(i).getString("branch_id"),
-                        branchesArray.getJSONObject(i).getString("branch_name")
+                        branchesArray.getJSONObject(i).getString("branch_name"),
+                        branchesArray.getJSONObject(i).getString("location_price")
+
                 ));
             }
             return branches;

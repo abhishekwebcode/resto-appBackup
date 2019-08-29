@@ -122,7 +122,7 @@ public interface ApiInterface {
                               @Field("name") String name,
                               @Field("city") String city,
                               @Field("state") String state,
-                              @Field("pincode") Integer pincode,
+                              @Field("pincode") String pincode,
                               @Field("local") String local,
                               @Field("flat") String flat,
                               @Field("gender") String gender,

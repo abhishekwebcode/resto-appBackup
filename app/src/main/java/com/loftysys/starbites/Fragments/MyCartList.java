@@ -65,6 +65,7 @@ public class MyCartList extends Fragment {
     public AppCompatSpinner deliverySpinner;
     ArrayList<Converter.Branch> branches;
     ArrayList<Converter.Table> tables;
+    public AppCompatSpinner selectBranch;
     View view;
     @BindView(R.id.categoryRecyclerView)
     RecyclerView productsRecyclerView;
@@ -80,7 +81,7 @@ public class MyCartList extends Fragment {
     @BindView(R.id.continueShopping)
     Button continueShopping;
     CartListAdapter wishListAdapter;
-
+    String deliveryCharge="0";
 
     @BindView(R.id.verifyEmailLayout)
     LinearLayout verifyEmailLayout;
@@ -88,6 +89,7 @@ public class MyCartList extends Fragment {
     String tableNumber=null;
     String branch=null;
     public void onDeliveryChanged(int position) {
+        onDeliverySelect();
         switch (position) {
             case 0:
                 tableNumber=null;
@@ -111,6 +113,24 @@ public class MyCartList extends Fragment {
         tableNumber=null;
     }
 
+    private void changeDeliveryPrice(String price) {
+        deliveryCharge=price;
+        wishListAdapter.changeDeliveryPriceText(price);
+    }
+
+    public void onDeliverySelect() {
+        if (deliveryType!=null && deliveryType.equals("Delivery")) {
+            if (selectBranch.getSelectedItemPosition()!=0) {
+                changeDeliveryPrice(branches.get(selectBranch.getSelectedItemPosition()).price);
+            }
+            else {
+                changeDeliveryPrice("0");
+            }
+        }
+        else {
+            changeDeliveryPrice("0");
+        }
+    }
     public void showTableSelector() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -152,6 +172,7 @@ public class MyCartList extends Fragment {
         if (pos!=0) {
             branch = branches.get(pos).id;
         } else{branch=null;}
+        onDeliverySelect();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,

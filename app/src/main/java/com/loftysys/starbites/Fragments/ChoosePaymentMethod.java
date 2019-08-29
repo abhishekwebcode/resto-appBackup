@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.camera2.params.SessionConfiguration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -37,6 +38,10 @@ import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
 import com.loftysys.starbites.Activities.SplashScreen;
+import com.smsgh.hubtelpayment.Class.Environment;
+import com.smsgh.hubtelpayment.Exception.MPowerPaymentException;
+import com.smsgh.hubtelpayment.Interfaces.OnPaymentResponse;
+import com.smsgh.hubtelpayment.MpowerPayments;
 
 import org.json.JSONObject;
 
@@ -225,6 +230,39 @@ public class ChoosePaymentMethod extends Fragment {
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
     private void continueArisoba() {
+
+        try {
+
+            com.smsgh.hubtelpayment.SessionConfiguration sessionConfiguration = new com.smsgh.hubtelpayment.SessionConfiguration()
+                    .Builder()
+                    .setClientId("l7DnBx5")
+                    .setSecretKey("5243eee047414979a41a138f5de61117")
+                    .setEndPointURL("http://www.comidaghana.com/starbitesgh_app/callback_hubtel")
+                    .setEnvironment(Environment.TEST_MODE)
+                    .build();
+            MpowerPayments mpowerPayments = new MpowerPayments(sessionConfiguration);
+            mpowerPayments.setPaymentDetails(10, "This is a demo payment");
+            mpowerPayments.Pay(getActivity());
+            mpowerPayments.setOnPaymentCallback(new OnPaymentResponse() {
+                @Override
+                public void onFailed(String token, String reason) {
+                }
+
+                @Override
+                public void onCancelled(String token) {
+                }
+
+                @Override
+                public void onSuccessful(String token) {
+                }
+            });
+        }
+        catch (MPowerPaymentException e) {
+            e.printStackTrace();
+        }
+
+        if (true) return;
+
         final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
         pDialog.setTitleText("Loading");
