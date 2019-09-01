@@ -45,7 +45,7 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
-
+public String tax = "0";
     public String deliveryType=null;
     public String tableNumber=null;
     public String branch=null;

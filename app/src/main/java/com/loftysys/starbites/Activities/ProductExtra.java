@@ -58,6 +58,7 @@ public class ProductExtra extends AppCompatActivity {
         setContentView(R.layout.activity_product_extra);
         ButterKnife.bind(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
         totalAmount = (TextView) findViewById(R.id.totalAmount);
         extraJsonArray = new JSONArray();
         quantity = 1;

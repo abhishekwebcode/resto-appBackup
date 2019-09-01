@@ -42,6 +42,10 @@ public class MyOrderedProductsDetailPage extends Fragment {
     List<ImageView> imageViews;
     @BindView(R.id.txtOrderSteps)
     TextView txtOrderSteps;
+    @BindView(R.id.deliveryCharge)
+    TextView delieryCharge;
+    @BindView(R.id.serviceCharge)
+    TextView serviceCharge;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +69,10 @@ public class MyOrderedProductsDetailPage extends Fragment {
             setState(orderes.get(pos).getStatuscode());
         }
         currency = "GH₵";
+        try {
+            delieryCharge.setText(orderes.get(pos).getDelivery());
+            serviceCharge.setText(orderes.get(pos).getTax());
+        } catch (Throwable e) {e.printStackTrace();}
         textViews.get(0).setText(orderes.get(pos).getOrderid());
         textViews.get(1).setText(orderes.get(pos).getOrderdate());
         textViews.get(3).setText(orderes.get(pos).getPaymode());

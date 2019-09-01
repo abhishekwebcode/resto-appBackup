@@ -61,28 +61,6 @@ public class EditCart extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                int action = e.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_MOVE:
-                        rv.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
         totalAmount = (TextView) findViewById(R.id.totalAmount);
         extraJsonArray = new JSONArray();
         quantity = Integer.parseInt(product.getVariants().getVarquantity());
@@ -143,7 +121,6 @@ public class EditCart extends AppCompatActivity {
                 setPrice();
                 break;
             case R.id.addToCart:
-
                 if (!MainActivity.userId.equalsIgnoreCase("")) {
                     addToCart();
                 } else {

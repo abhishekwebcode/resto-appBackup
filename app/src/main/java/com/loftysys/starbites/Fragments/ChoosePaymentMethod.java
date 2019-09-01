@@ -231,93 +231,7 @@ public class ChoosePaymentMethod extends Fragment {
     }
 
     private void continueArisoba() {
-
-        try {
-
-            com.smsgh.hubtelpayment.SessionConfiguration sessionConfiguration = new com.smsgh.hubtelpayment.SessionConfiguration()
-                    .Builder()
-                    .setClientId("l7DnBx5")
-                    .setSecretKey("5243eee047414979a41a138f5de61117")
-                    .setEndPointURL("http://www.comidaghana.com/starbitesgh_app/callback_hubtel")
-                    .setEnvironment(Environment.TEST_MODE)
-                    .build();
-            MpowerPayments mpowerPayments = new MpowerPayments(sessionConfiguration);
-            mpowerPayments.setPaymentDetails(10, "This is a demo payment");
-            mpowerPayments.Pay(getActivity());
-            mpowerPayments.setOnPaymentCallback(new OnPaymentResponse() {
-                @Override
-                public void onFailed(String token, String reason) {
-                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), reason, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onCancelled(String token) {
-                    Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), "canceled", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onSuccessful(String token) {
-                    Toast.makeText(getActivity(), "SUCESS", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (MPowerPaymentException e) {
-            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-
-        if (true) return;
-
-        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
-        pDialog.setTitleText("Loading");
-        pDialog.setCancelable(false);
-        pDialog.show();
-
-        MainActivity reference = (MainActivity) getActivity();
-
-
-        Api.getClient().addOrderVoucher(MainActivity.userId,
-                MyCartList.cartistResponseData.getCartid(),
-                ChoosePaymentMethod.address,
-                ChoosePaymentMethod.mobileNo,
-                "Hubtel Payment for user " + MainActivity.userId,
-                "Pending",
-                CartListAdapter.totalAmountPayable,
-                "Hubtel",
-                -2,
-                "-1",
-                reference.branch == null ? "" : reference.branch,
-                reference.tableNumber == null ? "" : reference.tableNumber,
-                reference.deliveryType == null ? "" : reference.deliveryType,
-                "",
-                new Callback<SignUpResponse>() {
-                    @Override
-                    public void success(SignUpResponse signUpResponse, Response response) {
-                        pDialog.dismiss();
-                        try {
-                            Log.d("RESPONSE", Converter.getString(response));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("GOING TO MAIN ACTIVITY");
-                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
-                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
-                        getActivity().startActivity(intent);
-                        ((Activity) getActivity()).finishAffinity();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        pDialog.dismiss();
-                        Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
-                        ((Activity) getActivity()).finish();
-                    }
-                });
+        Toast.makeText(getActivity(), "Payment Gateway not implemented!", Toast.LENGTH_SHORT).show();
     }
 
     private void moveNext() {
@@ -339,6 +253,7 @@ public class ChoosePaymentMethod extends Fragment {
                     Integer delivery = 0;
                     try {
                         delivery = Integer.parseInt(reference.deliveryCharge);
+
                     } catch (Throwable e) {
                         e.printStackTrace();
                     }
@@ -348,10 +263,10 @@ public class ChoosePaymentMethod extends Fragment {
                             ChoosePaymentMethod.mobileNo,
                             "Voucher " + voucher + " Applied for " + MainActivity.userId,
                             "Complete",
-                            CartListAdapter.totalAmountPayable,
+                            reference.totalAmountPayable,
                             "Voucher",
                             delivery,
-                            "-1",
+                            reference.tax,
                             reference.branch == null ? "" : reference.branch,
                             reference.tableNumber == null ? "" : reference.tableNumber,
                             reference.deliveryType == null ? "" : reference.deliveryType,
@@ -439,10 +354,10 @@ public class ChoosePaymentMethod extends Fragment {
                 ChoosePaymentMethod.mobileNo,
                 "COD Applied for " + MainActivity.userId,
                 "Complete",
-                CartListAdapter.totalAmountPayable,
+                reference.totalAmountPayable,
                 "COD",
                 delivery,
-                "-1",
+                reference.tax,
                 reference.branch == null ? "" : reference.branch,
                 reference.tableNumber == null ? "" : reference.tableNumber,
                 reference.deliveryType == null ? "" : reference.deliveryType,
@@ -466,6 +381,7 @@ public class ChoosePaymentMethod extends Fragment {
                     @Override
                     public void failure(RetrofitError error) {
                         pDialog.dismiss();
+                        error.printStackTrace();
                         Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
                         ((Activity) getActivity()).finish();
                     }
