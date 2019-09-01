@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -58,6 +59,30 @@ public class EditCart extends AppCompatActivity {
         setContentView(R.layout.activity_edit_cart);
         ButterKnife.bind(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                int action = e.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_MOVE:
+                        rv.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
         totalAmount = (TextView) findViewById(R.id.totalAmount);
         extraJsonArray = new JSONArray();
         quantity = Integer.parseInt(product.getVariants().getVarquantity());
@@ -86,7 +111,7 @@ public class EditCart extends AppCompatActivity {
         textViewList.get(3).setText(MainActivity.currency + " ");
         Picasso.with(EditCart.this)
                 .load(intent.getStringExtra("productImage"))
-                .placeholder(R.drawable.item_not_added)
+                .placeholder(R.drawable.defaultimage)
                 .into(productImage);
         setPrice();
     }

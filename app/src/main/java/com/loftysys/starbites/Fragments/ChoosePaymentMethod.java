@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.camera2.params.SessionConfiguration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -25,19 +24,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.loftysys.starbites.Activities.MainActivity;
+import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Adapter.CartListAdapter;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
-import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed;
 import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
 import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration;
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
-import com.loftysys.starbites.Activities.SplashScreen;
 import com.smsgh.hubtelpayment.Class.Environment;
 import com.smsgh.hubtelpayment.Exception.MPowerPaymentException;
 import com.smsgh.hubtelpayment.Interfaces.OnPaymentResponse;
@@ -88,9 +86,9 @@ public class ChoosePaymentMethod extends Fragment {
     EditText voucher_field;
     @BindView(R.id.voucher_verified)
     AppCompatButton voucher_verified;
-    public static String address, mobileNo,userEmail,profilePinCode;
+    public static String address, mobileNo, userEmail, profilePinCode;
     Intent intent;
-    Boolean isVoucherDone=false;
+    Boolean isVoucherDone = false;
     @BindView(R.id.amountPayable)
     TextView amountPayable;
 
@@ -107,7 +105,7 @@ public class ChoosePaymentMethod extends Fragment {
         MainActivity.cartCount.setVisibility(GONE);
         getUserProfileData();
         String total = ((MainActivity) getActivity()).totalAmountPayable;
-        amountPayable.setText(MainActivity.currency+total);
+        amountPayable.setText(MainActivity.currency + total);
         addressCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -196,7 +194,7 @@ public class ChoosePaymentMethod extends Fragment {
                                 moveNext();
                             }
                         } else {
-                            
+
                             Config.showCustomAlertDialog(getActivity(),
                                     "Please choose your saved address or add new to make payment",
                                     "",
@@ -204,7 +202,7 @@ public class ChoosePaymentMethod extends Fragment {
                         }
                     } else {
                         //TODO  CHECK HERE for migration
-                        if (true || SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()) )
+                        if (true || SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()))
                             moveNext();
                         else {
                             Config.showPincodeCustomAlertDialog1(getActivity(),
@@ -220,15 +218,18 @@ public class ChoosePaymentMethod extends Fragment {
                     ((MainActivity) getActivity()).loadFragment(new MyProfile(), true);
                     break;
             }
-        } catch (Throwable e ){e.printStackTrace();
-            Toast.makeText(getActivity(), "Please check all details carefully", Toast.LENGTH_SHORT).show();}
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Please check all details carefully", Toast.LENGTH_SHORT).show();
+        }
 
     }
-    protected void hideKeyboard(View view)
-    {
+
+    protected void hideKeyboard(View view) {
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
     private void continueArisoba() {
 
         try {
@@ -246,18 +247,26 @@ public class ChoosePaymentMethod extends Fragment {
             mpowerPayments.setOnPaymentCallback(new OnPaymentResponse() {
                 @Override
                 public void onFailed(String token, String reason) {
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), reason, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancelled(String token) {
+                    Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "canceled", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onSuccessful(String token) {
+                    Toast.makeText(getActivity(), "SUCESS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-        catch (MPowerPaymentException e) {
+        } catch (MPowerPaymentException e) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -269,35 +278,35 @@ public class ChoosePaymentMethod extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        MainActivity reference = (MainActivity)getActivity();
-        
+        MainActivity reference = (MainActivity) getActivity();
+
 
         Api.getClient().addOrderVoucher(MainActivity.userId,
                 MyCartList.cartistResponseData.getCartid(),
                 ChoosePaymentMethod.address,
                 ChoosePaymentMethod.mobileNo,
-                "Hubtel Payment for user "+MainActivity.userId,
+                "Hubtel Payment for user " + MainActivity.userId,
                 "Pending",
                 CartListAdapter.totalAmountPayable,
                 "Hubtel",
                 -2,
                 "-1",
-                reference.branch==null?"":reference.branch,
-                reference.tableNumber==null?"":reference.tableNumber,
-                reference.deliveryType==null?"":reference.deliveryType,
+                reference.branch == null ? "" : reference.branch,
+                reference.tableNumber == null ? "" : reference.tableNumber,
+                reference.deliveryType == null ? "" : reference.deliveryType,
                 "",
                 new Callback<SignUpResponse>() {
                     @Override
                     public void success(SignUpResponse signUpResponse, Response response) {
                         pDialog.dismiss();
                         try {
-                            Log.d("RESPONSE",Converter.getString(response));
+                            Log.d("RESPONSE", Converter.getString(response));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         System.out.println("GOING TO MAIN ACTIVITY");
                         Intent intent = new Intent(getActivity(), OrderConfirmed.class);
-                        intent.putExtra("Delivery",((MainActivity)getActivity()).deliveryType);
+                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
                         getActivity().startActivity(intent);
                         ((Activity) getActivity()).finishAffinity();
                     }
@@ -310,54 +319,55 @@ public class ChoosePaymentMethod extends Fragment {
                     }
                 });
     }
+
     private void moveNext() {
-        paymentMethod="";
+        paymentMethod = "";
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
             case R.id.asoriba:
                 voucherBox.setVisibility(GONE);
-
                 continueArisoba();
-
                 break;
             case R.id.voucher:
                 voucherBox.setVisibility(View.VISIBLE);
                 if (isVoucherDone) {
-
                     final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
                     pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
                     pDialog.setTitleText("Loading");
                     pDialog.setCancelable(false);
                     pDialog.show();
-
-                    MainActivity reference = (MainActivity)getActivity();
-                    
-
+                    MainActivity reference = (MainActivity) getActivity();
+                    Integer delivery = 0;
+                    try {
+                        delivery = Integer.parseInt(reference.deliveryCharge);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
                     Api.getClient().addOrderVoucher(MainActivity.userId,
                             MyCartList.cartistResponseData.getCartid(),
                             ChoosePaymentMethod.address,
                             ChoosePaymentMethod.mobileNo,
-                            "Voucher "+voucher+" Applied for "+MainActivity.userId,
+                            "Voucher " + voucher + " Applied for " + MainActivity.userId,
                             "Complete",
                             CartListAdapter.totalAmountPayable,
                             "Voucher",
-                            -2,
+                            delivery,
                             "-1",
-                            reference.branch==null?"":reference.branch,
-                            reference.tableNumber==null?"":reference.tableNumber,
-                            reference.deliveryType==null?"":reference.deliveryType,
+                            reference.branch == null ? "" : reference.branch,
+                            reference.tableNumber == null ? "" : reference.tableNumber,
+                            reference.deliveryType == null ? "" : reference.deliveryType,
                             voucher,
                             new Callback<SignUpResponse>() {
                                 @Override
                                 public void success(SignUpResponse signUpResponse, Response response) {
                                     pDialog.dismiss();
                                     try {
-                                        Log.d("RESPONSE",Converter.getString(response));
+                                        Log.d("RESPONSE", Converter.getString(response));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                     System.out.println("GOING TO MAIN ACTIVITY");
                                     Intent intent = new Intent(getActivity(), OrderConfirmed.class);
-                                    intent.putExtra("Delivery",((MainActivity)getActivity()).deliveryType);
+                                    intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
                                     getActivity().startActivity(intent);
                                     ((Activity) getActivity()).finishAffinity();
                                 }
@@ -379,10 +389,10 @@ public class ChoosePaymentMethod extends Fragment {
                 voucherBox.setVisibility(GONE);
                 paymentMethod = "cod";
                 doCOd();
-                if (true   ) return;
+                if (true) return;
                 Config.addOrder(getActivity(),
                         "COD",
-                        "COD",((MainActivity)getActivity()).deliveryType);
+                        "COD", ((MainActivity) getActivity()).deliveryType);
                 break;
             case R.id.satellite:
                 //paypal was here
@@ -408,6 +418,7 @@ public class ChoosePaymentMethod extends Fragment {
         }
 
     }
+
     private void doCOd() {
         final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
@@ -415,34 +426,39 @@ public class ChoosePaymentMethod extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        MainActivity reference = (MainActivity)getActivity();
-
+        MainActivity reference = (MainActivity) getActivity();
+        Integer delivery = 0;
+        try {
+            delivery = Integer.parseInt(reference.deliveryCharge);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         Api.getClient().addOrderVoucher(MainActivity.userId,
                 MyCartList.cartistResponseData.getCartid(),
                 ChoosePaymentMethod.address,
                 ChoosePaymentMethod.mobileNo,
-                "COD Applied for "+MainActivity.userId,
+                "COD Applied for " + MainActivity.userId,
                 "Complete",
                 CartListAdapter.totalAmountPayable,
                 "COD",
-                -2,
+                delivery,
                 "-1",
-                reference.branch==null?"":reference.branch,
-                reference.tableNumber==null?"":reference.tableNumber,
-                reference.deliveryType==null?"":reference.deliveryType,
+                reference.branch == null ? "" : reference.branch,
+                reference.tableNumber == null ? "" : reference.tableNumber,
+                reference.deliveryType == null ? "" : reference.deliveryType,
                 voucher,
                 new Callback<SignUpResponse>() {
                     @Override
                     public void success(SignUpResponse signUpResponse, Response response) {
                         pDialog.dismiss();
                         try {
-                            Log.d("RESPONSE",Converter.getString(response));
+                            Log.d("RESPONSE", Converter.getString(response));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         System.out.println("GOING TO MAIN ACTIVITY");
                         Intent intent = new Intent(getActivity(), OrderConfirmed.class);
-                        intent.putExtra("Delivery",((MainActivity)getActivity()).deliveryType);
+                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
                         getActivity().startActivity(intent);
                         ((Activity) getActivity()).finishAffinity();
                     }
@@ -468,10 +484,10 @@ public class ChoosePaymentMethod extends Fragment {
 
     public void verifyVoucher(View v) {
         if (isVoucherDone) {
-            isVoucherDone=false;
+            isVoucherDone = false;
             voucher_field.setEnabled(true);
             voucher_field.setText("");
-            voucher="";
+            voucher = "";
             voucher_verified.setText("Verify Voucher");
         } else {
             voucher = voucher_field.getText().toString();
@@ -487,7 +503,7 @@ public class ChoosePaymentMethod extends Fragment {
                         if (jsonObject.getString("status").equals("1")) {
                             voucher_field.setEnabled(false);
                             voucher_verified.setText("Voucher Applied");
-                            isVoucherDone=true;
+                            isVoucherDone = true;
                         } else {
                             Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                         }
@@ -533,7 +549,7 @@ public class ChoosePaymentMethod extends Fragment {
                     public void success(UserProfileResponse userProfileResponse, Response response) {
                         makePayment.setClickable(true);
                         progressBar.setVisibility(GONE);
-                        userEmail=userProfileResponse.getEmail();
+                        userEmail = userProfileResponse.getEmail();
                         String s = "";
                         if (!userProfileResponse.getLandmark().equalsIgnoreCase("")) {
                             s = ", " + userProfileResponse.getLandmark();

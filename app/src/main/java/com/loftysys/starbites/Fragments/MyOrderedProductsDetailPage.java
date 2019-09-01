@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.loftysys.starbites.Adapter.DetailOrderProductListAdapter;
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.Extras.Config;
@@ -48,13 +50,14 @@ public class MyOrderedProductsDetailPage extends Fragment {
         view = inflater.inflate(R.layout.fragment_my_ordered_products_detail, container, false);
         ButterKnife.bind(this, view);
         MainActivity.title.setText("");
+        Log.d("ORERES DETAILS",new Gson().toJson(orderes.get(pos)));
         setData();
         setProductsData();
         return view;
     }
 
     private void setData() {
-        if (orderes.get(pos).getStatuscode() == 0) {
+        if (orderes.get(pos).getStatuscode() == 0 && false) {
             orderStateLayout.setVisibility(View.GONE);
             txtOrderSteps.setText("Order canceled by admin, Please contact our support for more details.");
         } else {
@@ -71,6 +74,15 @@ public class MyOrderedProductsDetailPage extends Fragment {
     }
 
     private void setState(int statuscode) {
+        if (orderes.get(pos).getStatus().equalsIgnoreCase("Pending")) {
+            imageViews.get(0).setImageResource(R.drawable.status_done);
+        }
+        if (orderes.get(pos).getStatus().equalsIgnoreCase("Complete")) {
+            imageViews.get(0).setImageResource(R.drawable.status_done);
+            imageViews.get(1).setImageResource(R.drawable.status_done);
+            imageViews.get(2).setImageResource(R.drawable.status_done);
+        }
+        if (true) return;
         for (int i = 0; i < statuscode; i++) {
             imageViews.get(i).setImageResource(R.drawable.status_done);
         }

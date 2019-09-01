@@ -86,7 +86,7 @@ public class ProductExtra extends AppCompatActivity {
         textViewList.get(3).setText(MainActivity.currency + " ");
         Picasso.with(ProductExtra.this)
                 .load(intent.getStringExtra("productImage"))
-                .placeholder(R.drawable.item_not_added)
+                .placeholder(R.drawable.defaultimage)
                 .into(productImage);
         setPrice();
     }

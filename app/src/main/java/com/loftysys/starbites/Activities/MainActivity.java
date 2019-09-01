@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public String deliveryType=null;
     public String tableNumber=null;
     public String branch=null;
+    public String deliveryCharge="0";
     public static ImageView menu, back, cart,search;
     public static DrawerLayout drawerLayout;
     public static TextView title, cartCount;

@@ -42,13 +42,13 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     public static double totalAmount = 0f, amountPayable;
     public static String totalAmountPayable;
     ArrayList<Converter.Branch> branches;
-    double tax = 0f;
+    public double tax = 0f;
     MyCartList reference;
-    String total;
-    TextView delvieryPrice;
+    public String total;
+    public TextView delvieryPrice;
 
     public void changeDeliveryPriceText(String text) {
-        delvieryPrice.setText(text);
+        delvieryPrice.setText(text+MainActivity.currency);
     }
 
     public  String getTotalAmountPayable() {
@@ -153,6 +153,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             Log.d("floatTax", tax + "");
             holder.textViews.get(3).setText(MainActivity.currency + " " + String.format("%.2f",tax));
             holder.textViews.get(4).setText(MainActivity.currency + " " + (String.format("%.2f", (amountPayable + tax))));
+            reference.total=holder.textViews.get(4);
+            reference.baseTotal=String.valueOf(amountPayable+tax);
             totalAmountPayable = (String.format("%.2f", (amountPayable + tax)));
             total=totalAmountPayable;
             Log.d("totalAmountPayable", totalAmountPayable);

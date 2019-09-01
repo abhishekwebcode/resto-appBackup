@@ -46,7 +46,7 @@
                             android:id="@+id/noImageAdded"
                             android:layout_width="match_parent"
                             android:layout_height="250dp"
-                            android:src="@drawable/item_not_added"
+                            android:src="@drawable/defaultimage"
                             android:visibility="gone" />
 
 

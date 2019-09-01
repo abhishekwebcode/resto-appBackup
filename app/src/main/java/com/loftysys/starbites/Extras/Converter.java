@@ -15,6 +15,13 @@ import retrofit.client.Response;
 public class Converter {
 
     public static class pin {
+        public static List<String> getPins(ArrayList<pin> tables) {
+            ArrayList<String> f=new ArrayList<>();
+            for (int i = 0; i < tables.size(); i++) {
+                f.add(tables.get(i).pincode);
+            }
+            return f;
+        }
         @Override
         public String toString() {
             return pincode;
@@ -22,16 +29,19 @@ public class Converter {
 
         public String id="";
         public String pincode="";
-        public pin(String a ,String b){
+        public String locationPrice="";
+        public pin(String a ,String b,String c){
             this.id=a;
             this.pincode=b;
+            this.locationPrice=c;
         }
-        public static List<pin> getPins(JSONArray array)throws Exception {
+        public static ArrayList<pin> getPins(JSONArray array)throws Exception {
             ArrayList<pin> pins = new ArrayList<>();
             for (int i = 0; i < array.length(); i++) {
                 pins.add(new pin(
                         array.getJSONObject(i).getString("id"),
-                        array.getJSONObject(i).getString("pincode")
+                        array.getJSONObject(i).getString("pincode"),
+                        array.getJSONObject(i).getString("location_price")
                 ));
             }
             return pins;
@@ -104,8 +114,8 @@ public class Converter {
                 branches.add(new Branch(
                         branchesArray.getJSONObject(i).getString("branch_id"),
                         branchesArray.getJSONObject(i).getString("branch_name"),
-                        branchesArray.getJSONObject(i).getString("location_price")
-
+                        "0"
+                        //branchesArray.getJSONObject(i).getString("location_price")
                 ));
             }
             return branches;

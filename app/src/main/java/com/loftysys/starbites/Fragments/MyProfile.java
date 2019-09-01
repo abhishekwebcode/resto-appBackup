@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.loftysys.starbites.Activities.AccountVerification;
 import com.loftysys.starbites.Activities.Login;
 import com.loftysys.starbites.Activities.MainActivity;
@@ -132,7 +133,6 @@ public class MyProfile extends Fragment {
         alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
-
     }
 
     private void setUserProfileData() {
@@ -370,6 +370,7 @@ public class MyProfile extends Fragment {
                     public void success(SignUpResponse signUpResponse, Response response) {
                         pDialog.dismiss();
                         if (signUpResponse.getSuccess().equalsIgnoreCase("true")) {
+                            Log.d("LOGINR ESPONSE",new Gson().toJson(signUpResponse));
                             Config.showCustomAlertDialog(getActivity(),
                                     "Profile Status",
                                     "Profile updated",

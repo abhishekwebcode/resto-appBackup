@@ -68,7 +68,7 @@ public class Home extends Fragment implements LocationListener {
         public void onBindViewHolder(SliderAdapterVH viewHolder, int position) {
             Picasso.with(context)
                     .load(items.get(position))
-                    .placeholder(R.drawable.item_not_added)
+                    .placeholder(R.drawable.defaultimage)
                     .into(viewHolder.imageViewBackground);
         }
 

@@ -6,9 +6,10 @@
     android:orientation="vertical">
 
     <ImageView
+        android:scaleType="centerInside"
         android:id="@+id/order_confirmed"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="210dp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_40sdp"
         android:src="@drawable/defaultimage" />
