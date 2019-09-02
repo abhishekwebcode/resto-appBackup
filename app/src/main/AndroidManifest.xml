@@ -61,6 +61,7 @@
         <activity
             android:name="com.loftysys.starbites.Activities.EditCart"
             android:screenOrientation="portrait" />
+        <!--
         <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
         <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
         <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
@@ -69,8 +70,14 @@
         <activity android:name="com.paypal.android.sdk.payments.FuturePaymentConsentActivity" />
         <activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
         <activity android:name="io.card.payment.DataEntryActivity" />
-        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed" />
+        <service
+            android:name="com.paypal.android.sdk.payments.PayPalService"
+            android:exported="false" />
         <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment" />
+        -->
+
+        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed" />
+
         <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -79,9 +86,7 @@
             android:name="com.loftysys.starbites.Activities.MapViewActivity"
             android:screenOrientation="portrait" />
 
-        <service
-            android:name="com.paypal.android.sdk.payments.PayPalService"
-            android:exported="false" />
+
 
         <!-- Firebase Notifications -->
         <service android:name="com.loftysys.starbites.FCM.MyFirebaseMessagingService">

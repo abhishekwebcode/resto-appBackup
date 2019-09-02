@@ -304,7 +304,7 @@ public String tax = "0";
             intent.setData(Uri.parse("mailto:" + getResources().getString(R.string.emailId) + "?subject=" + getResources().getString(R.string.app_name) + " feedback"));
             startActivity(Intent.createChooser(intent, "E_mail"));
         } catch (ActivityNotFoundException e) {
-            //TODO smth
+            e.printStackTrace();
         }
 
     }

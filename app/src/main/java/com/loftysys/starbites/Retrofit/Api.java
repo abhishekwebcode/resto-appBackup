@@ -3,7 +3,6 @@ package com.loftysys.starbites.Retrofit;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.OkHttpClient;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.android.AndroidLog;

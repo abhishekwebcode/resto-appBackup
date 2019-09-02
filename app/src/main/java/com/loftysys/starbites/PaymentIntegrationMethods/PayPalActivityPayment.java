@@ -1,4 +1,6 @@
+/*
 package com.loftysys.starbites.PaymentIntegrationMethods;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -93,3 +95,5 @@ public class PayPalActivityPayment extends AppCompatActivity {
         }
     }
 }
+
+ */

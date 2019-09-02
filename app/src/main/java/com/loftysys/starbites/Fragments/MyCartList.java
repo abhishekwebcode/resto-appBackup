@@ -113,12 +113,15 @@ public class MyCartList extends Fragment {
     public void onDeliveryChanged(int position) {
         switch (position) {
             case 0:
+                changeDeliveryPrice("0");
                 tableNumber = null;
                 deliveryType = null;
                 break;
             case 1:
+                changeDeliveryPrice("0");
                 showTableSelector();
             case 2:
+                changeDeliveryPrice("0");
                 deliveryType = "Take Away";
                 tableNumber = null;
                 break;

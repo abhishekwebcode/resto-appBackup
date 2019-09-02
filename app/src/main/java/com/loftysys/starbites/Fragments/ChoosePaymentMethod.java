@@ -32,14 +32,10 @@ import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
 import com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed;
-import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
+//import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
 import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration;
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
-import com.smsgh.hubtelpayment.Class.Environment;
-import com.smsgh.hubtelpayment.Exception.MPowerPaymentException;
-import com.smsgh.hubtelpayment.Interfaces.OnPaymentResponse;
-import com.smsgh.hubtelpayment.MpowerPayments;
 
 import org.json.JSONObject;
 
@@ -201,7 +197,7 @@ public class ChoosePaymentMethod extends Fragment {
                                     SweetAlertDialog.ERROR_TYPE);
                         }
                     } else {
-                        //TODO  CHECK HERE for migration
+                        // TODO  CHECK HERE for migration
                         if (true || SplashScreen.restaurantDetailResponseData.getDeliverycity().contains(profilePinCode.trim()))
                             moveNext();
                         else {
@@ -312,7 +308,7 @@ public class ChoosePaymentMethod extends Fragment {
             case R.id.satellite:
                 //paypal was here
                 paymentMethod = "paypal";
-                intent = new Intent(getActivity(), PayPalActivityPayment.class);
+                //intent = new Intent(getActivity(), PayPalActivityPayment.class);
                 startActivity(intent);
                 break;
             case R.id.search:
