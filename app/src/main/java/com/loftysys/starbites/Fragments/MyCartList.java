@@ -402,6 +402,5 @@ public class MyCartList extends Fragment {
         productsRecyclerView.setLayoutManager(gridLayoutManager);
         wishListAdapter = new CartListAdapter(getActivity(), productsData, branches, this);
         productsRecyclerView.setAdapter(wishListAdapter);
-
     }
 }

@@ -48,7 +48,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     public TextView delvieryPrice;
 
     public void changeDeliveryPriceText(String text) {
-        delvieryPrice.setText(text+MainActivity.currency);
+        delvieryPrice.setText(MainActivity.currency+" "+text);
     }
 
     public  String getTotalAmountPayable() {
@@ -137,13 +137,20 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
                 }
             });
             if (MyCartList.cartistResponseData.getShipping().length() > 0) {
-                holder.textViews.get(2).setText(MainActivity.currency + " " + String.format("%.2f",Double.parseDouble(MyCartList.cartistResponseData.getShipping())));
+                holder.textViews.get(2).setText(
+                        MainActivity.currency+" "+
+                        String.format(
+                                "%.2f",
+                                Double.parseDouble(
+                                        MyCartList.cartistResponseData.getShipping()
+                                )
+                        )
+                );
                 amountPayable = totalAmount +
                         Double.parseDouble(MyCartList.cartistResponseData.getShipping());
             } else {
                 amountPayable = totalAmount;
-                holder.textViews.get(2).setText(MainActivity.currency + " 0.0");
-
+                holder.textViews.get(2).setText(MainActivity.currency+" 0.0");
             }
             if (MyCartList.cartistResponseData.getTax().length() > 0) {
                 tax = (totalAmount / 100) * Double.parseDouble(MyCartList.cartistResponseData.getTax());

@@ -28,7 +28,7 @@ public class CartListViewHolder extends RecyclerView.ViewHolder {
     CardView cardView1;
     @BindView(R.id.totalAmount)
     LinearLayout totalAmount;
-    @BindViews({R.id.txtPrice, R.id.price, R.id.delivery,  R.id.tax,  R.id.amountPayable,  R.id.txtTax})
+    @BindViews({R.id.txtPrice, R.id.price, R.id.deliveryDummy,  R.id.tax,  R.id.amountPayable,  R.id.txtTax})
     List<TextView> textViews;
     @BindView(R.id.edit)
     TextView edit;

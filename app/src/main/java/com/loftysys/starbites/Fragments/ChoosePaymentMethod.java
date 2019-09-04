@@ -1,6 +1,5 @@
 package com.loftysys.starbites.Fragments;
 
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,7 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Adapter.CartListAdapter;
@@ -36,11 +34,8 @@ import com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed;
 import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration;
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
-
 import org.json.JSONObject;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -286,8 +281,10 @@ public class ChoosePaymentMethod extends Fragment {
                                 @Override
                                 public void failure(RetrofitError error) {
                                     pDialog.dismiss();
+                                    error.printStackTrace();
+                                    //Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
                                     Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
-                                    ((Activity) getActivity()).finish();
                                 }
                             });
 
@@ -379,7 +376,6 @@ public class ChoosePaymentMethod extends Fragment {
                         pDialog.dismiss();
                         error.printStackTrace();
                         Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
-                        ((Activity) getActivity()).finish();
                     }
                 });
     }
@@ -484,7 +480,6 @@ public class ChoosePaymentMethod extends Fragment {
                             mobileNo = userProfileResponse.getMobile();
                             profilePinCode = userProfileResponse.getPincode();
                         }
-
                     }
 
                     @Override
