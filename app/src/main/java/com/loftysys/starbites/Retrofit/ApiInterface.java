@@ -189,6 +189,25 @@ public interface ApiInterface {
                          @Field("voucher") String voucher,
                          Callback<SignUpResponse> callback);
 
+    @FormUrlEncoded
+    @POST("/addorders.php")
+    public void addOrderVoucherHuntel(@Field("user_id") String user_id,
+                                @Field("cart_id") String cart_id,
+                                @Field("address") String address,
+                                @Field("phone") String phone,
+                                @Field("paymentref") String paymentref,
+                                @Field("paystatus") String paystatus,
+                                @Field("total") String total,
+                                @Field("paymentmode") String paymentmode,
+                                @Field("delivery") Integer delivery,
+                                @Field("restax") String restax,
+                                @Field("choose_branch") String chosen_branch,
+                                @Field("chosen_table") String chosen_table,
+                                @Field("delivery_method") String delivery_method,
+                                @Field("voucher") String voucher,
+                                @Field("hubtel") String hubtel,
+                                Callback<Response> callback);
+
 
     @FormUrlEncoded
     @POST("/forgot.php")

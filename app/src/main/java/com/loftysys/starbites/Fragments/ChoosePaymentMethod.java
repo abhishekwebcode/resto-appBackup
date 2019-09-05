@@ -1,10 +1,14 @@
 package com.loftysys.starbites.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
@@ -13,6 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,20 +31,22 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.Activities.SplashScreen;
-import com.loftysys.starbites.Adapter.CartListAdapter;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.MVP.SignUpResponse;
 import com.loftysys.starbites.MVP.UserProfileResponse;
 import com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed;
-//import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
 import com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration;
 import com.loftysys.starbites.R;
 import com.loftysys.starbites.Retrofit.Api;
+
 import org.json.JSONObject;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -48,7 +59,10 @@ import retrofit.client.Response;
 
 import static android.view.View.GONE;
 
+//import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
+
 public class ChoosePaymentMethod extends Fragment {
+    public AlertDialog browser;
     ProgressDialog progressDialog;
     View view;
     @BindView(R.id.voucher_box)
@@ -221,8 +235,149 @@ public class ChoosePaymentMethod extends Fragment {
         in.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void continueArisoba() {
-        Toast.makeText(getActivity(), "Payment Gateway not implemented!", Toast.LENGTH_SHORT).show();
+    private void continueHubtel() {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
+        final MainActivity reference = (MainActivity) getActivity();
+        Integer delivery = 0;
+        try {
+            delivery = Integer.parseInt(reference.deliveryCharge);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        Api.getClient().addOrderVoucherHuntel(MainActivity.userId,
+                MyCartList.cartistResponseData.getCartid(),
+                ChoosePaymentMethod.address,
+                ChoosePaymentMethod.mobileNo,
+                "COD Applied for " + MainActivity.userId,
+                "Complete",
+                reference.totalAmountPayable,
+                "COD",
+                delivery,
+                reference.tax,
+                reference.branch == null ? "" : reference.branch,
+                reference.tableNumber == null ? "" : reference.tableNumber,
+                reference.deliveryType == null ? "" : reference.deliveryType,
+                voucher, "true",
+                new ResponseCallback() {
+                    @Override
+                    public void success(Response response) {
+                        pDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(Converter.getString(response));
+                            if (jsonObject.getBoolean("success")) {
+                                checkout(jsonObject.getString("url"));
+                            } else {
+                                Toast.makeText(reference, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(), "Couldn't load your payment", Toast.LENGTH_SHORT).show();
+                        }
+                        if (true) return;
+                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
+                        getActivity().startActivity(intent);
+                        ((Activity) getActivity()).finishAffinity();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        pDialog.dismiss();
+                        error.printStackTrace();
+                        Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    public void checkout(String url) {
+        final WebView webView = new WebView(getActivity());
+        final WebSettings webSettings = webView.getSettings();
+        webSettings.setAllowContentAccess(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setGeolocationEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setCancelable(false).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(getActivity(), "Payment Window was closed", Toast.LENGTH_SHORT).show();
+                webView.destroy();
+                dialog.dismiss();
+            }
+        }).setNeutralButton("Cancel Payment", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), "Payment Window was closed", Toast.LENGTH_SHORT).show();
+                webView.destroy();
+                dialog.dismiss();
+            }
+        }).setView(webView);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                webView.destroy();
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+        webView.addJavascriptInterface(new WebAppInterface(this), "post");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Toast.makeText(getActivity(), "Payment Window was closed", Toast.LENGTH_SHORT).show();
+                    webView.destroy();
+                }
+            });
+        webView.loadUrl(url);
+        if (browser != null) {
+            browser.cancel();
+            browser = null;
+        }
+        browser = builder.create();
+        browser.setCanceledOnTouchOutside(false);
+        browser.show();
+    }
+
+    public class WebAppInterface {
+        ChoosePaymentMethod mContext;
+
+        /**
+         * Instantiate the interface and set the context
+         */
+        WebAppInterface(ChoosePaymentMethod c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface   // must be added for API 17 or higher
+        public void complete(String status) {
+            Toast.makeText(mContext.getActivity(), status, Toast.LENGTH_SHORT).show();
+            mContext.browser.dismiss();
+            switch (status) {
+                case "Success":
+                    Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                    intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
+                    getActivity().startActivity(intent);
+                    ((Activity) getActivity()).finishAffinity();
+                    break;
+                case "Fail":
+                    Toast.makeText(getActivity(), "Your payment failed, if money was deducted please contact your bank ", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void moveNext() {
@@ -230,7 +385,10 @@ public class ChoosePaymentMethod extends Fragment {
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
             case R.id.asoriba:
                 voucherBox.setVisibility(GONE);
-                continueArisoba();
+                /*
+                Arisoba was migrated to hubtel
+                 */
+                continueHubtel();
                 break;
             case R.id.voucher:
                 voucherBox.setVisibility(View.VISIBLE);
@@ -283,12 +441,9 @@ public class ChoosePaymentMethod extends Fragment {
                                     pDialog.dismiss();
                                     error.printStackTrace();
                                     //Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-
                                     Toast.makeText(getActivity(), "Error placing your order", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-
                 } else {
                     Toast.makeText(getActivity(), "Please apply a voucher", Toast.LENGTH_SHORT).show();
                 }
