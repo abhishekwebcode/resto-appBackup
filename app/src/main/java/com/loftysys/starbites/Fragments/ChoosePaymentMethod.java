@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
@@ -32,6 +31,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apps.norris.paywithslydepay.core.PayWithSlydepay;
+import com.apps.norris.paywithslydepay.core.SlydepayPayment;
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Extras.Config;
@@ -57,11 +58,15 @@ import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
 //import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
 
 public class ChoosePaymentMethod extends Fragment {
+    public static String lastVoucher = "";
+    static boolean dontgo ;
     public AlertDialog browser;
     ProgressDialog progressDialog;
     View view;
@@ -120,6 +125,7 @@ public class ChoosePaymentMethod extends Fragment {
                 }
             }
         });
+
         choosePaymentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +141,9 @@ public class ChoosePaymentMethod extends Fragment {
                         voucherBox.setVisibility(GONE);
                         break;
                     case R.id.voucher:
-                        voucherBox.setVisibility(View.VISIBLE);
+                        paymentMethodsGroup.clearCheck();
+                         ((MainActivity)getActivity()).loadFragment(new VoucherSelect(),true);
+                        //voucherBox.setVisibility(View.VISIBLE);
                         break;
                     case R.id.cod:
                         voucherBox.setVisibility(GONE);
@@ -146,12 +154,7 @@ public class ChoosePaymentMethod extends Fragment {
                 }
             }
         });
-        voucher_verified.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyVoucher(v);
-            }
-        });
+
         return view;
     }
 
@@ -307,7 +310,7 @@ public class ChoosePaymentMethod extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setCancelable(false).setOnCancelListener(new DialogInterface.OnCancelListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),android.R.style.Theme_Black_NoTitleBar_Fullscreen).setCancelable(false).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 Toast.makeText(getActivity(), "Payment Window was closed", Toast.LENGTH_SHORT).show();
@@ -380,6 +383,32 @@ public class ChoosePaymentMethod extends Fragment {
         }
     }
 
+    public void showVouchersList()  {
+    }
+
+    public void SlydePay() {
+        MainActivity reference = (MainActivity)getActivity();
+        SlydepayPayment slydepayPayment = new com.apps.norris.paywithslydepay.core.SlydepayPayment(getActivity());
+        slydepayPayment.initCredentials("hillsontechnology@outlook.com","1545075302893");
+        PayWithSlydepay.Pay(getActivity(),"Your order with Starbites",Double.parseDouble(reference.totalAmountPayable),"Starbites order",MainActivity.userId,"hillsontechnology@outlook.com",MyCartList.cartistResponseData.getCartid(),"324234234",2);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 2:
+                switch (resultCode) {
+                    case RESULT_OK:
+                        Toast.makeText(getActivity(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_CANCELED:
+                        Toast.makeText(getActivity(), "FAILURE", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+        }
+    }
+
     private void moveNext() {
         paymentMethod = "";
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
@@ -391,6 +420,7 @@ public class ChoosePaymentMethod extends Fragment {
                 continueHubtel();
                 break;
             case R.id.voucher:
+                if (true) break;
                 voucherBox.setVisibility(View.VISIBLE);
                 if (isVoucherDone) {
                     final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
@@ -545,44 +575,7 @@ public class ChoosePaymentMethod extends Fragment {
         return false;
     }
 
-    public void verifyVoucher(View v) {
-        if (isVoucherDone) {
-            isVoucherDone = false;
-            voucher_field.setEnabled(true);
-            voucher_field.setText("");
-            voucher = "";
-            voucher_verified.setText("Verify Voucher");
-        } else {
-            voucher = voucher_field.getText().toString();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.show();
-            Api.getClient().check_voucher(MainActivity.userId, voucher, new ResponseCallback() {
-                @Override
-                public void success(Response response) {
-                    progressDialog.cancel();
-                    try {
-                        String res = Converter.getString(response);
-                        JSONObject jsonObject = new JSONObject(res);
-                        if (jsonObject.getString("status").equals("1")) {
-                            voucher_field.setEnabled(false);
-                            voucher_verified.setText("Voucher Applied");
-                            isVoucherDone = true;
-                        } else {
-                            Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        }
-                        Log.d("jj", res);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    progressDialog.cancel();
-                }
-            });
-        }
-    }
 
     private boolean validatePinCode(EditText editText) {
         if (editText.getText().toString().trim().length() > 0) {

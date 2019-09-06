@@ -250,7 +250,6 @@ public class MyProfile extends Fragment {
                 Common.saveUserData(getActivity(), "userId", "");
                 Config.moveTo(getActivity(), Login.class);
                 getActivity().finishAffinity();
-
             }
         });
     }

@@ -70,8 +70,8 @@ public class MyOrderedProductsDetailPage extends Fragment {
         }
         currency = "GH₵";
         try {
-            delieryCharge.setText(orderes.get(pos).getDelivery());
-            serviceCharge.setText(orderes.get(pos).getTax());
+            delieryCharge.setText(currency + " " + orderes.get(pos).getDelivery());
+            serviceCharge.setText(currency + " " + orderes.get(pos).getTax());
         } catch (Throwable e) {e.printStackTrace();}
         textViews.get(0).setText(orderes.get(pos).getOrderid());
         textViews.get(1).setText(orderes.get(pos).getOrderdate());

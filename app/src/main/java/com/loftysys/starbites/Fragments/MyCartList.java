@@ -224,11 +224,14 @@ public class MyCartList extends Fragment {
                     ((MainActivity) getActivity()).deliveryType = deliveryType;
                     ((MainActivity) getActivity()).branch = branch;
                     ((MainActivity) getActivity()).tableNumber = tableNumber;
+                    Double totalFinal = Double.parseDouble(wishListAdapter.getTotalAmountPayable()) + Double.parseDouble(deliveryCharge);
+
                     ((MainActivity) getActivity()).totalAmountPayable = String.valueOf(
-                            Double.parseDouble(wishListAdapter.getTotalAmountPayable()) +
-                                    Double.parseDouble(deliveryCharge)
+                            totalFinal.intValue()
                     );
                     ((MainActivity) getActivity()).deliveryCharge = deliveryCharge;
+                    ChoosePaymentMethod.lastVoucher="";
+                    ChoosePaymentMethod.dontgo=false;
                     ((MainActivity) getActivity()).loadFragment(new ChoosePaymentMethod(), true);
                 } else
                     Config.showCustomAlertDialog(getActivity(),

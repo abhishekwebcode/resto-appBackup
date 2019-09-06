@@ -1,6 +1,7 @@
 package com.loftysys.starbites.Fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.loftysys.starbites.Activities.AccountVerification;
 import com.loftysys.starbites.Activities.EditCart;
 import com.loftysys.starbites.Adapter.MyWishListAdapter;
+import com.loftysys.starbites.Extras.Common;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Activities.Login;
 import com.loftysys.starbites.Extras.Converter;
@@ -75,6 +77,38 @@ public class showVouchers extends Fragment {
         getVouchers();
         return view;
     }
+    public SweetAlertDialog alertDialog1;
+    public void showNoVouchers() {
+        System.out.println("CALLING ON SHOW NO COUVHER");
+        if (alertDialog1!=null) {
+            alertDialog1.dismiss();
+            alertDialog1=null;
+        }
+        alertDialog1 = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+        alertDialog1.setCanceledOnTouchOutside(false);
+        final SweetAlertDialog alertDialog = alertDialog1;
+        alertDialog.setTitleText("Oops");
+        alertDialog.setContentText("You don't have any vouchers");
+        alertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                alertDialog.dismissWithAnimation();
+                ((MainActivity)getActivity()).loadFragment(new MainFragment(),false);
+            }
+        });
+        alertDialog.show();
+        Button btn = (Button) alertDialog.findViewById(R.id.confirm_button);
+        btn.setBackground(getResources().getDrawable(R.drawable.custom_dialog_button));
+        btn.setText("Shop More");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismissWithAnimation();
+                ((MainActivity)getActivity()).loadFragment(new MainFragment(),false);
+            }
+        });
+    }
+
 
     private void getVouchers() {
         final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
@@ -85,10 +119,19 @@ public class showVouchers extends Fragment {
         Api.getClient().getVouchers(MainActivity.userId, new ResponseCallback() {
             @Override
             public void success(Response response) {
-                pDialog.dismiss();
+                pDialog.dismissWithAnimation();
                 try {
                     String res = Converter.getString(response);
-                    JSONArray jsonArray = new JSONObject(res).getJSONArray("data");
+                    JSONObject response1 = new JSONObject(res);
+                    if (response1.isNull("data")) {
+                        showNoVouchers();
+                        return;
+                    }
+                    JSONArray jsonArray = response1.getJSONArray("data");
+                    if (jsonArray.length()==0) {
+                        showNoVouchers();
+                        return;
+                    }
                     ArrayList<VoucherItem> vouchers=new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); i++) {
                         vouchers.add(new VoucherItem(
@@ -131,7 +174,7 @@ public class showVouchers extends Fragment {
             this.voucher_name=a;
         }
     }
-    class adapter extends ArrayAdapter<VoucherItem> {
+    static public class adapter extends ArrayAdapter<VoucherItem> {
         private int resourceLayout;
         private Context mContext;
         List<VoucherItem> list;

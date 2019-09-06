@@ -157,6 +157,7 @@ public interface ApiInterface {
     public void check_voucher(
             @Field("user_id") String user_id,
             @Field("voucher") String voucher,
+            @Field("item_price") String item_price,
             Callback<Response> callback
     );
 

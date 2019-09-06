@@ -177,12 +177,12 @@ public String tax = "0";
                 }
                 break;
             case R.id.back:
+
                 removeCurrentFragmentAndMoveBack();
                 break;
             case R.id.cart:
             case R.id.cartCount:
                 loadFragment(new MyCartList(), true);
-
                 break;
             case R.id.search:
                 loadFragment(new SearchProducts(), true);
