@@ -43,7 +43,7 @@ public class DetailPageVariantAdapter extends RecyclerView.Adapter<DetailPageVar
     public void onBindViewHolder(DetailPageVariantViewHolder holder, int position) {
         Log.d("selectedList",selectedPos+"");
         holder.size.setText(variants.get(position).getVariantname());
-        holder.price.setText(MainActivity.currency+" "+variants.get(position).getVarprice());
+        holder.price.setText(MainActivity.currency+variants.get(position).getVarprice());
         if (position==selectedPos)
         {
             holder.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.gray));

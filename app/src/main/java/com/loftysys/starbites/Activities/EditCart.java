@@ -85,8 +85,8 @@ public class EditCart extends AppCompatActivity {
         productPrice = intent.getStringExtra("productPrice");
         orderLimit = intent.getStringExtra("productOrderLimit");
         textViewList.get(0).setText(productName);
-        textViewList.get(2).setText("Price: " + MainActivity.currency + " ");
-        textViewList.get(3).setText(MainActivity.currency + " ");
+        textViewList.get(2).setText("Price: " + MainActivity.currency);
+        textViewList.get(3).setText(MainActivity.currency);
         Picasso.with(EditCart.this)
                 .load(intent.getStringExtra("productImage"))
                 .placeholder(R.drawable.defaultimage)

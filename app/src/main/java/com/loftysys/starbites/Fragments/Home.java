@@ -169,30 +169,32 @@ public class Home extends Fragment implements LocationListener {
     }
 
     private void setRestaurantDetails() {
-        if (SplashScreen.restaurantDetailResponseData.getPhone() != null) {
-            textViews.get(0).setText(SplashScreen.restaurantDetailResponseData.getPhone());
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                viewDistanceLayout.setVisibility(View.VISIBLE);
-                distanceLayout.setVisibility(View.GONE);
-            } else {
-                viewDistanceLayout.setVisibility(View.GONE);
-                distanceLayout.setVisibility(View.VISIBLE);
-                checkConnection();
-            }
-        } else {
-            cardView.setVisibility(View.GONE);
-        }
         try {
-            Log.d("imagess", SplashScreen.restaurantDetailResponseData.getImages().get(0));
+            if (SplashScreen.restaurantDetailResponseData.getPhone() != null) {
+                textViews.get(0).setText(SplashScreen.restaurantDetailResponseData.getPhone());
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    viewDistanceLayout.setVisibility(View.VISIBLE);
+                    distanceLayout.setVisibility(View.GONE);
+                } else {
+                    viewDistanceLayout.setVisibility(View.GONE);
+                    distanceLayout.setVisibility(View.VISIBLE);
+                    checkConnection();
+                }
+            } else {
+                cardView.setVisibility(View.GONE);
+            }
+            try {
+                Log.d("imagess", SplashScreen.restaurantDetailResponseData.getImages().get(0));
 
-            Picasso.with(getActivity())
-                    .load(SplashScreen.restaurantDetailResponseData.getImages().get(0))
-                    .resize(300, 300)
-                    .placeholder(R.drawable.defaultimage)
-                    .into(bannerImage);
-        } catch (Exception e) {
-            bannerImage.setVisibility(View.GONE);
-        }
+                Picasso.with(getActivity())
+                        .load(SplashScreen.restaurantDetailResponseData.getImages().get(0))
+                        .resize(300, 300)
+                        .placeholder(R.drawable.defaultimage)
+                        .into(bannerImage);
+            } catch (Exception e) {
+                bannerImage.setVisibility(View.GONE);
+            }
+        } catch (Throwable e) {e.printStackTrace();}
     }
 
     private void setCategoriesData() {

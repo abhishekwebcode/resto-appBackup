@@ -33,6 +33,8 @@ import android.widget.Toast;
 
 import com.apps.norris.paywithslydepay.core.PayWithSlydepay;
 import com.apps.norris.paywithslydepay.core.SlydepayPayment;
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Extras.Config;
@@ -59,6 +61,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_FIRST_USER;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
@@ -66,6 +69,7 @@ import static android.view.View.GONE;
 
 public class ChoosePaymentMethod extends Fragment {
     public static String lastVoucher = "";
+    public static String location;
     static boolean dontgo ;
     public AlertDialog browser;
     ProgressDialog progressDialog;
@@ -137,6 +141,8 @@ public class ChoosePaymentMethod extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
+                    case R.id.slydepay:
+                        voucherBox.setVisibility(GONE);
                     case R.id.asoriba:
                         voucherBox.setVisibility(GONE);
                         break;
@@ -383,16 +389,71 @@ public class ChoosePaymentMethod extends Fragment {
         }
     }
 
-    public void showVouchersList()  {
-    }
 
     public void SlydePay() {
         MainActivity reference = (MainActivity)getActivity();
-        SlydepayPayment slydepayPayment = new com.apps.norris.paywithslydepay.core.SlydepayPayment(getActivity());
-        slydepayPayment.initCredentials("hillsontechnology@outlook.com","1545075302893");
-        PayWithSlydepay.Pay(getActivity(),"Your order with Starbites",Double.parseDouble(reference.totalAmountPayable),"Starbites order",MainActivity.userId,"hillsontechnology@outlook.com",MyCartList.cartistResponseData.getCartid(),"324234234",2);
+        try {
+            SlydepayPayment slydepayPayment = new com.apps.norris.paywithslydepay.core.SlydepayPayment(getActivity());
+            slydepayPayment.initCredentials("hillsontechnology@outlook.com", "1545075302893");
+        } catch (Throwable e) {e.printStackTrace();}
+        PayWithSlydepay.Pay(getActivity(),"Your order with Starbites",Double.parseDouble(reference.totalAmountPayable),"Starbites order",MainActivity.userId,"hillsontechnology@outlook.com",MyCartList.cartistResponseData.getCartid(),"233268000322",2);
     }
+    private void placeOrderViaSlydepayFinal() {
 
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        MainActivity reference = (MainActivity) getActivity();
+        Integer delivery = 0;
+        try {
+            delivery = Integer.parseInt(reference.deliveryCharge);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        Api.getClient().addOrderVoucher(MainActivity.userId,
+                MyCartList.cartistResponseData.getCartid(),
+                ChoosePaymentMethod.address,
+                ChoosePaymentMethod.mobileNo,
+                "Slydepay Order for " + MainActivity.userId,
+                "Complete",
+                reference.totalAmountPayable,
+                "Slydepay",
+                delivery,
+                reference.tax,
+                reference.branch == null ? "" : reference.branch,
+                reference.tableNumber == null ? "" : reference.tableNumber,
+                reference.deliveryType == null ? "" : reference.deliveryType,
+                voucher,
+                location,
+                new Callback<SignUpResponse>() {
+                    @Override
+                    public void success(SignUpResponse signUpResponse, Response response) {
+                        pDialog.dismiss();
+                        try {
+                            Log.d("RESPONSE", Converter.getString(response));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("GOING TO MAIN ACTIVITY");
+                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
+                        getActivity().startActivity(intent);
+                        ((Activity) getActivity()).finishAffinity();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        pDialog.dismiss();
+                        error.printStackTrace();
+                        Toast.makeText(getActivity(), "Error registering your order", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -400,10 +461,14 @@ public class ChoosePaymentMethod extends Fragment {
             case 2:
                 switch (resultCode) {
                     case RESULT_OK:
-                        Toast.makeText(getActivity(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                        placeOrderViaSlydepayFinal();
+                        //try { Crashlytics.log(new Gson().toJson(intent)); } catch (Throwable e){e.printStackTrace();}
                         break;
                     case RESULT_CANCELED:
-                        Toast.makeText(getActivity(), "FAILURE", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Error getting your payment", Toast.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_FIRST_USER:
+                        Toast.makeText(getActivity(), "The payment cancelled by you", Toast.LENGTH_SHORT).show();
                         break;
                 }
         }
@@ -418,6 +483,9 @@ public class ChoosePaymentMethod extends Fragment {
                 Arisoba was migrated to hubtel
                  */
                 continueHubtel();
+                break;
+            case R.id.slydepay:
+                SlydePay();
                 break;
             case R.id.voucher:
                 if (true) break;
@@ -450,6 +518,7 @@ public class ChoosePaymentMethod extends Fragment {
                             reference.tableNumber == null ? "" : reference.tableNumber,
                             reference.deliveryType == null ? "" : reference.deliveryType,
                             voucher,
+                            location,
                             new Callback<SignUpResponse>() {
                                 @Override
                                 public void success(SignUpResponse signUpResponse, Response response) {
@@ -540,6 +609,7 @@ public class ChoosePaymentMethod extends Fragment {
                 reference.tableNumber == null ? "" : reference.tableNumber,
                 reference.deliveryType == null ? "" : reference.deliveryType,
                 voucher,
+                location,
                 new Callback<SignUpResponse>() {
                     @Override
                     public void success(SignUpResponse signUpResponse, Response response) {

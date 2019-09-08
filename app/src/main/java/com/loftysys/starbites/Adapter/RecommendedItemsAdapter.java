@@ -114,7 +114,7 @@ public class RecommendedItemsAdapter extends RecyclerView.Adapter<RecommendedIte
                 holder.discountPercentage.setText(((int) Math.round(discountPercentage) + "% Off"));
             }
             Log.d("mrptextsize", productList.get(position).getMrpprice().length() + "");
-            holder.actualPrice.setText(MainActivity.currency + " " + productList.get(position).getMrpprice());
+            holder.actualPrice.setText(MainActivity.currency + productList.get(position).getMrpprice());
             holder.actualPrice.setPaintFlags(holder.actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } catch (Exception e) {
 

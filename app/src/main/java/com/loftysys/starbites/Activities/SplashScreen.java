@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.loftysys.starbites.Extras.Common;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Extras.DetectConnection;

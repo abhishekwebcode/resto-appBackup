@@ -283,10 +283,17 @@
                         android:orientation="vertical">
 
                         <RadioButton
-                            android:id="@+id/asoriba"
+                            android:id="@+id/slydepay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:checked="true"
+                            android:text="Pay Using SlydePay" />
+
+                        <RadioButton
+                            android:visibility="gone"
+                            android:id="@+id/asoriba"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="Pay Using Hubtel" />
 
                         <RadioButton

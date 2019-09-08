@@ -188,6 +188,7 @@ public interface ApiInterface {
                          @Field("chosen_table") String chosen_table,
                          @Field("delivery_method") String delivery_method,
                          @Field("voucher") String voucher,
+                         @Field("location") String location,
                          Callback<SignUpResponse> callback);
 
     @FormUrlEncoded

@@ -48,7 +48,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
     public TextView delvieryPrice;
 
     public void changeDeliveryPriceText(String text) {
-        delvieryPrice.setText(MainActivity.currency+" "+text);
+        delvieryPrice.setText(MainActivity.currency+text);
     }
 
     public  String getTotalAmountPayable() {
@@ -88,7 +88,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
         }
 
         holder.productName1.setText(cartProducts.get(position).getProductName() + " - " + cartProducts.get(position).getVariants().getVariantname());
-        holder.currency.setText(MainActivity.currency + " ");
+        holder.currency.setText(MainActivity.currency);
         holder.price1.setText(String.format("%.2f",(Double.parseDouble(cartProducts.get(position).getVariants().getVarquantity()) * Double.parseDouble(cartProducts.get(position).getVariants().getVarprice()))));
         Picasso.with(context)
                 .load(cartProducts.get(position).getProductPrimaryImage())
@@ -101,7 +101,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             holder.extraPrice.setVisibility(View.VISIBLE);
             holder.extraCount.setVisibility(View.VISIBLE);
             holder.extraCount.setText(cartProducts.get(position).getExtra().size() + " Extra:");
-            holder.extraPrice.setText(MainActivity.currency + " " + String.format("%.2f",extraAmount));
+            holder.extraPrice.setText(MainActivity.currency + String.format("%.2f",extraAmount));
         }
 
         holder.quantity.setText(cartProducts.get(position).getVariants().getVarquantity() + " Quantity:");
@@ -110,7 +110,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             holder.totalAmount.setVisibility(View.VISIBLE);
             holder.txtGurantee.setText(Html.fromHtml(context.getResources().getString(R.string.secure_payment_text)));
             holder.textViews.get(0).setText(" Total Price (" + cartProducts.size() + " items)");
-            holder.textViews.get(1).setText(MainActivity.currency + " " + String.format("%.2f",totalAmount));
+            holder.textViews.get(1).setText(MainActivity.currency  + String.format("%.2f",totalAmount));
             holder.select_branch.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,Converter.Branch.getAdapterObject(branches)));
             reference.deliverySpinner=holder.delivery_method;
             holder.delivery_method.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -138,7 +138,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             });
             if (MyCartList.cartistResponseData.getShipping().length() > 0) {
                 holder.textViews.get(2).setText(
-                        MainActivity.currency+" "+
+                        MainActivity.currency+
                         String.format(
                                 "%.2f",
                                 Double.parseDouble(
@@ -150,7 +150,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
                         Double.parseDouble(MyCartList.cartistResponseData.getShipping());
             } else {
                 amountPayable = totalAmount;
-                holder.textViews.get(2).setText(MainActivity.currency+" 0.0");
+                holder.textViews.get(2).setText(MainActivity.currency+"0.0");
             }
             if (MyCartList.cartistResponseData.getTax().length() > 0) {
                 tax = (totalAmount / 100) * Double.parseDouble(MyCartList.cartistResponseData.getTax());
@@ -159,8 +159,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
             tax = Double.parseDouble(String.format("%.2f", tax));
             ((MainActivity)reference.getActivity()).tax=String.valueOf(tax);
             Log.d("floatTax", tax + "");
-            holder.textViews.get(3).setText(MainActivity.currency + " " + String.format("%.2f",tax));
-            holder.textViews.get(4).setText(MainActivity.currency + " " + (String.format("%.2f", (amountPayable + tax))));
+            holder.textViews.get(3).setText(MainActivity.currency + String.format("%.2f",tax));
+            holder.textViews.get(4).setText(MainActivity.currency + (String.format("%.2f", (amountPayable + tax))));
             reference.total=holder.textViews.get(4);
             reference.baseTotal=String.valueOf(amountPayable+tax);
             totalAmountPayable = (String.format("%.2f", (amountPayable + tax)));

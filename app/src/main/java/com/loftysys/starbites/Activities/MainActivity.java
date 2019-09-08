@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.loftysys.starbites.Extras.Common;
 import com.loftysys.starbites.Extras.Config;
 import com.loftysys.starbites.Fragments.AppInfo;

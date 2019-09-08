@@ -254,7 +254,7 @@ public class ProductDetail extends Fragment {
 
         productName.setText(productList.get(position).getProductName() + " - " +
                 productList.get(position).getVariants().get(variantPosition).getVariantname());
-        currency.setText(MainActivity.currency + " ");
+        currency.setText(MainActivity.currency);
         price.setText(productList.get(position).getVariants().get(variantPosition).getVarprice());
 
     }

@@ -77,12 +77,14 @@ public class MyCartList extends Fragment {
     String branch = null;
     public TextView total;
     public String baseTotal = "0";
+    public String location="";
 
     public void showLocationSelector() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                location="";
                 dismissDialog();
                 dialog.dismiss();
             }
@@ -99,6 +101,7 @@ public class MyCartList extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 deliveryCharge = pins.get(which).locationPrice;
+                location=pins.get(which).pincode;
                 deliveryType = "Delivery";
                 changeDeliveryPrice(pins.get(which).locationPrice);
             }
@@ -113,14 +116,17 @@ public class MyCartList extends Fragment {
     public void onDeliveryChanged(int position) {
         switch (position) {
             case 0:
+                location="";
                 changeDeliveryPrice("0");
                 tableNumber = null;
                 deliveryType = null;
                 break;
             case 1:
+                location="";
                 changeDeliveryPrice("0");
                 showTableSelector();
             case 2:
+                location="";
                 changeDeliveryPrice("0");
                 deliveryType = "Take Away";
                 tableNumber = null;
@@ -142,7 +148,7 @@ public class MyCartList extends Fragment {
         deliveryCharge = price;
         wishListAdapter.changeDeliveryPriceText(price);
         Double newTotalPrice = Double.parseDouble(wishListAdapter.getTotalAmountPayable()) + Double.parseDouble(deliveryCharge);
-        total.setText(MainActivity.currency + " " + (String.format("%.2f", newTotalPrice)));
+        total.setText(MainActivity.currency + (String.format("%.2f", newTotalPrice)));
     }
 
 
@@ -225,13 +231,11 @@ public class MyCartList extends Fragment {
                     ((MainActivity) getActivity()).branch = branch;
                     ((MainActivity) getActivity()).tableNumber = tableNumber;
                     Double totalFinal = Double.parseDouble(wishListAdapter.getTotalAmountPayable()) + Double.parseDouble(deliveryCharge);
-
-                    ((MainActivity) getActivity()).totalAmountPayable = String.valueOf(
-                            totalFinal.intValue()
-                    );
+                    ((MainActivity) getActivity()).totalAmountPayable = String.valueOf(totalFinal);
                     ((MainActivity) getActivity()).deliveryCharge = deliveryCharge;
                     ChoosePaymentMethod.lastVoucher="";
                     ChoosePaymentMethod.dontgo=false;
+                    ChoosePaymentMethod.location=location;
                     ((MainActivity) getActivity()).loadFragment(new ChoosePaymentMethod(), true);
                 } else
                     Config.showCustomAlertDialog(getActivity(),

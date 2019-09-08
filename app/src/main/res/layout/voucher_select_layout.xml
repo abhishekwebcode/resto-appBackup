@@ -18,6 +18,36 @@
         android:textStyle="bold" />
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Voucher"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            android:textStyle="bold" />
+        <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/voucher_current"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="No Voucher Applied"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 <ScrollView
@@ -39,7 +69,6 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/redeem"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Redeem"

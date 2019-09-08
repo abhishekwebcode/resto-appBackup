@@ -58,7 +58,7 @@ public class RecommendedExtrasAdapter extends RecyclerView.Adapter<RecommendedEx
         extraPriceList.add((double) 0);
         holder.textViewList.get(0).setText(extraList.get(position).getExtraname());
         holder.textViewList.get(1).setText(String.format("%.2f", Double.parseDouble(extraList.get(position).getExtraprice())));
-        holder.textViewList.get(2).setText(MainActivity.currency + " ");
+        holder.textViewList.get(2).setText(MainActivity.currency);
     }
 
     @Override

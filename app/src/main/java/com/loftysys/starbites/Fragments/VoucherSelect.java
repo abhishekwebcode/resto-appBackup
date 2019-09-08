@@ -2,12 +2,16 @@ package com.loftysys.starbites.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +36,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit.Callback;
 import retrofit.ResponseCallback;
@@ -46,15 +51,26 @@ public class VoucherSelect extends Fragment {
     AppCompatButton redeem;
     ArrayList<Tag> tags;
     ArrayList<VoucherItem> voucherItems;
-
+    public String currentVoucher="No Voucher Selected";
+    @BindView(R.id.voucher_current)
+    AppCompatTextView currentv;
+    Drawable drawable;
     static String TAG = "show vouchers";
 
     public void redeem(View v) {
 
     }
 
-    public void addOrder(String voucher) {
-
+    public void changeCurrentVoucher(String text) {
+        currentv.setText(text);
+        currentVoucher=text;
+    }
+    @OnClick(R.id.redeem)
+    public void addOrder() {
+        if (currentVoucher.equals("")) {
+            Toast.makeText(getActivity(), "No Voucher Selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
         pDialog.setTitleText("Loading");
@@ -72,7 +88,7 @@ public class VoucherSelect extends Fragment {
                 MyCartList.cartistResponseData.getCartid(),
                 ChoosePaymentMethod.address,
                 ChoosePaymentMethod.mobileNo,
-                "Voucher " + voucher + " Applied for " + MainActivity.userId,
+                "Voucher " + currentVoucher + " Applied for " + MainActivity.userId,
                 "Complete",
                 reference.totalAmountPayable,
                 "Voucher",
@@ -81,7 +97,8 @@ public class VoucherSelect extends Fragment {
                 reference.branch == null ? "" : reference.branch,
                 reference.tableNumber == null ? "" : reference.tableNumber,
                 reference.deliveryType == null ? "" : reference.deliveryType,
-                voucher,
+                currentVoucher,
+                ChoosePaymentMethod.location,
                 new Callback<SignUpResponse>() {
                     @Override
                     public void success(SignUpResponse signUpResponse, Response response) {
@@ -123,6 +140,7 @@ public class VoucherSelect extends Fragment {
         } else {
             Config.moveTo(getActivity(), Login.class);
         }
+        drawable = new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         return view;
     }
 
@@ -199,6 +217,7 @@ public class VoucherSelect extends Fragment {
         ArrayList<Tag> arrayList = new ArrayList<>();
         for (int i = 0; i < voucherItemArrayList.size(); i++) {
             Tag temp = new Tag(voucherItemArrayList.get(i).voucher_name);
+            temp.background=drawable;
             temp.isDeletable = false;
             arrayList.add(temp);
         }
@@ -206,19 +225,28 @@ public class VoucherSelect extends Fragment {
     }
 
     public void checkVoucher(final String voucher) {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
         final MainActivity reference = (MainActivity) getActivity();
         Api.getClient().check_voucher(MainActivity.userId, voucher, reference.totalAmountPayable, new ResponseCallback() {
             @Override
             public void success(Response response) {
                 try {
                     JSONObject jsonObject = new JSONObject(Converter.getString(response));
-                    if (jsonObject.getString("status").equals(1)) {
+                    if (jsonObject.getString("status").equalsIgnoreCase("1")) {
                         ChoosePaymentMethod.lastVoucher = voucher;
-                        ((MainActivity) getActivity()).loadFragment(new ChoosePaymentMethod(), true);
+                        changeCurrentVoucher(voucher);
+                        pDialog.dismiss();
+                        //((MainActivity) getActivity()).loadFragment(new ChoosePaymentMethod(), true);
                     } else {
                         Toast.makeText(reference, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        pDialog.dismiss();
                     }
                 } catch (Throwable e) {
+                    pDialog.dismiss();
                     Toast.makeText(reference, "Couldn't apply your voucher", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -228,6 +256,7 @@ public class VoucherSelect extends Fragment {
             public void failure(RetrofitError error) {
                 Toast.makeText(reference, "Couldn't apply your voucher", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
+                pDialog.dismiss();
             }
         });
     }
