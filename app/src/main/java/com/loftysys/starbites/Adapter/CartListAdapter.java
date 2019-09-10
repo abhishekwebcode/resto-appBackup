@@ -157,7 +157,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListViewHolder> {
                 holder.textViews.get(5).setText("Service Fee (" + MyCartList.cartistResponseData.getTax() + "%)");
             }
             tax = Double.parseDouble(String.format("%.2f", tax));
-            ((MainActivity)reference.getActivity()).tax=String.valueOf(tax);
+            ((MainActivity)reference.getActivity()).tax=String.valueOf(MyCartList.cartistResponseData.getTax());
             Log.d("floatTax", tax + "");
             holder.textViews.get(3).setText(MainActivity.currency + String.format("%.2f",tax));
             holder.textViews.get(4).setText(MainActivity.currency + (String.format("%.2f", (amountPayable + tax))));

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
@@ -398,81 +399,8 @@ public class ChoosePaymentMethod extends Fragment {
         } catch (Throwable e) {e.printStackTrace();}
         PayWithSlydepay.Pay(getActivity(),"Your order with Starbites",Double.parseDouble(reference.totalAmountPayable),"Starbites order",MainActivity.userId,"hillsontechnology@outlook.com",MyCartList.cartistResponseData.getCartid(),"233268000322",2);
     }
-    private void placeOrderViaSlydepayFinal() {
-
-        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
-        pDialog.setTitleText("Loading");
-        pDialog.setCancelable(false);
-        pDialog.show();
-
-        MainActivity reference = (MainActivity) getActivity();
-        Integer delivery = 0;
-        try {
-            delivery = Integer.parseInt(reference.deliveryCharge);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        Api.getClient().addOrderVoucher(MainActivity.userId,
-                MyCartList.cartistResponseData.getCartid(),
-                ChoosePaymentMethod.address,
-                ChoosePaymentMethod.mobileNo,
-                "Slydepay Order for " + MainActivity.userId,
-                "Complete",
-                reference.totalAmountPayable,
-                "Slydepay",
-                delivery,
-                reference.tax,
-                reference.branch == null ? "" : reference.branch,
-                reference.tableNumber == null ? "" : reference.tableNumber,
-                reference.deliveryType == null ? "" : reference.deliveryType,
-                voucher,
-                location,
-                new Callback<SignUpResponse>() {
-                    @Override
-                    public void success(SignUpResponse signUpResponse, Response response) {
-                        pDialog.dismiss();
-                        try {
-                            Log.d("RESPONSE", Converter.getString(response));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("GOING TO MAIN ACTIVITY");
-                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
-                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
-                        getActivity().startActivity(intent);
-                        ((Activity) getActivity()).finishAffinity();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        pDialog.dismiss();
-                        error.printStackTrace();
-                        Toast.makeText(getActivity(), "Error registering your order", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
 
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case 2:
-                switch (resultCode) {
-                    case RESULT_OK:
-                        placeOrderViaSlydepayFinal();
-                        //try { Crashlytics.log(new Gson().toJson(intent)); } catch (Throwable e){e.printStackTrace();}
-                        break;
-                    case RESULT_CANCELED:
-                        Toast.makeText(getActivity(), "Error getting your payment", Toast.LENGTH_SHORT).show();
-                        break;
-                    case RESULT_FIRST_USER:
-                        Toast.makeText(getActivity(), "The payment cancelled by you", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-        }
-    }
 
     private void moveNext() {
         paymentMethod = "";

@@ -59,7 +59,7 @@ dependencies {
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    compile project(path: ':paywithslydepay')
+    api project(path: ':paywithslydepay')
     implementation 'com.github.Cutta:TagView:1.3'
 
 }

@@ -344,7 +344,6 @@ public class PayWithSlydepay extends AppCompatActivity {
                     JSONObject result1 = new JSONObject(result.getString("result"));
                     token = result1.getString("payToken");
                     paymentCode = result1.getString("orderCode");
-
                 }else {
                     success = 0;
                 }

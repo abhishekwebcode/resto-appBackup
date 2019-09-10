@@ -1,10 +1,12 @@
 package com.loftysys.starbites.Activities;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,7 +29,9 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.loftysys.starbites.Extras.Common;
 import com.loftysys.starbites.Extras.Config;
+import com.loftysys.starbites.Extras.Converter;
 import com.loftysys.starbites.Fragments.AppInfo;
+import com.loftysys.starbites.Fragments.ChoosePaymentMethod;
 import com.loftysys.starbites.Fragments.FAQ;
 import com.loftysys.starbites.Fragments.FavoriteList;
 import com.loftysys.starbites.Fragments.MainFragment;
@@ -38,12 +42,18 @@ import com.loftysys.starbites.Fragments.ProductDetail;
 import com.loftysys.starbites.Fragments.RestaurantDetails;
 import com.loftysys.starbites.Fragments.SearchProducts;
 import com.loftysys.starbites.Fragments.showVouchers;
+import com.loftysys.starbites.MVP.SignUpResponse;
+import com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed;
 import com.loftysys.starbites.R;
+import com.loftysys.starbites.Retrofit.Api;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 public String tax = "0";
@@ -72,6 +82,81 @@ public String tax = "0";
 
     public void login() {
 
+    }
+
+    public MainActivity getActivity(){return this;}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 2:
+                switch (resultCode) {
+                    case RESULT_OK:
+                        Toast.makeText(this, "Booking Order...", Toast.LENGTH_SHORT).show();
+
+                        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                        pDialog.setTitleText("Loading");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
+
+                        MainActivity reference = (MainActivity) getActivity();
+                        Integer delivery = 0;
+                        try {
+                            delivery = Integer.parseInt(reference.deliveryCharge);
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                        }
+                        Api.getClient().addOrderVoucher(MainActivity.userId,
+                                MyCartList.cartistResponseData.getCartid(),
+                                ChoosePaymentMethod.address,
+                                ChoosePaymentMethod.mobileNo,
+                                "Slydepay Order for " + MainActivity.userId,
+                                "Complete",
+                                reference.totalAmountPayable,
+                                "Slydepay",
+                                delivery,
+                                reference.tax,
+                                reference.branch == null ? "" : reference.branch,
+                                reference.tableNumber == null ? "" : reference.tableNumber,
+                                reference.deliveryType == null ? "" : reference.deliveryType,
+                                "",
+                                ChoosePaymentMethod.location,
+                                new Callback<SignUpResponse>() {
+                                    @Override
+                                    public void success(SignUpResponse signUpResponse, Response response) {
+                                        pDialog.dismiss();
+                                        try {
+                                            Log.d("RESPONSE", Converter.getString(response));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        System.out.println("GOING TO MAIN ACTIVITY");
+                                        Intent intent = new Intent(getActivity(), OrderConfirmed.class);
+                                        intent.putExtra("Delivery", ((MainActivity) getActivity()).deliveryType);
+                                        getActivity().startActivity(intent);
+                                        ((Activity) getActivity()).finishAffinity();
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        pDialog.dismiss();
+                                        error.printStackTrace();
+                                        Toast.makeText(getActivity(), "Error registering your order", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        //try { Crashlytics.log(new Gson().toJson(intent)); } catch (Throwable e){e.printStackTrace();}
+                        break;
+                    case RESULT_CANCELED:
+                        Toast.makeText(getActivity(), "Error getting your payment", Toast.LENGTH_SHORT).show();
+                        break;
+                    case RESULT_FIRST_USER:
+                        Toast.makeText(getActivity(), "The payment cancelled by you", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+        }
     }
 
     @Override
@@ -196,10 +281,7 @@ public String tax = "0";
     }
     public void openWhatsApp(){
         try {
-
             String toNumber = SplashScreen.restaurantDetailResponseData.getPhone(); // Replace with mobile phone number without +Sign or leading zeros.
-
-
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://api.whatsapp.com/send?phone="+toNumber +"&text="));
             startActivity(intent);

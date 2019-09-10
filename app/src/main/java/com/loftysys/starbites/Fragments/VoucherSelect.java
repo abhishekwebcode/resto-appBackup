@@ -58,14 +58,13 @@ public class VoucherSelect extends Fragment {
     static String TAG = "show vouchers";
 
     public void redeem(View v) {
-
+        addOrder();
     }
 
     public void changeCurrentVoucher(String text) {
         currentv.setText(text);
         currentVoucher=text;
     }
-    @OnClick(R.id.redeem)
     public void addOrder() {
         if (currentVoucher.equals("")) {
             Toast.makeText(getActivity(), "No Voucher Selected", Toast.LENGTH_SHORT).show();
@@ -231,7 +230,7 @@ public class VoucherSelect extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
         final MainActivity reference = (MainActivity) getActivity();
-        Api.getClient().check_voucher(MainActivity.userId, voucher, reference.totalAmountPayable, new ResponseCallback() {
+        Api.getClient().check_voucher(MainActivity.userId, voucher, Double.parseDouble(reference.totalAmountPayable), new ResponseCallback() {
             @Override
             public void success(Response response) {
                 try {
