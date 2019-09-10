@@ -27,15 +27,13 @@
 
         <EditText
             android:id="@+id/phone"
-            android:editable="false"
-            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textSize="18sp"
             android:textColor="#000000"
             android:inputType="numberSigned"
-            android:hint="Phone Number"/>
+            android:hint="233268000322"/>
 
     </android.support.design.widget.TextInputLayout>
 

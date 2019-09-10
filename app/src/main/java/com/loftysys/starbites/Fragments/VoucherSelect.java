@@ -56,14 +56,17 @@ public class VoucherSelect extends Fragment {
     AppCompatTextView currentv;
     Drawable drawable;
     static String TAG = "show vouchers";
-
+    Boolean activeRedeem  = false;
     public void redeem(View v) {
+        if (!activeRedeem) {
+            Toast.makeText(getActivity(),"Please select a voucher",Toast.LENGTH_LONG).show();
+            return;
+        }
         addOrder();
     }
 
     public void changeCurrentVoucher(String text) {
         currentv.setText(text);
-        currentVoucher=text;
     }
     public void addOrder() {
         if (currentVoucher.equals("")) {
@@ -238,9 +241,13 @@ public class VoucherSelect extends Fragment {
                     if (jsonObject.getString("status").equalsIgnoreCase("1")) {
                         ChoosePaymentMethod.lastVoucher = voucher;
                         changeCurrentVoucher(voucher);
+                        VoucherSelect.this.currentVoucher=voucher;
+                        activeRedeem=true;
                         pDialog.dismiss();
                         //((MainActivity) getActivity()).loadFragment(new ChoosePaymentMethod(), true);
                     } else {
+                        activeRedeem=false;
+                        changeCurrentVoucher("No Voucher Applied");
                         Toast.makeText(reference, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                         pDialog.dismiss();
                     }

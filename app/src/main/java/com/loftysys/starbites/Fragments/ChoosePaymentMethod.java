@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.AppCompatButton;
@@ -34,8 +33,6 @@ import android.widget.Toast;
 
 import com.apps.norris.paywithslydepay.core.PayWithSlydepay;
 import com.apps.norris.paywithslydepay.core.SlydepayPayment;
-import com.crashlytics.android.Crashlytics;
-import com.google.gson.Gson;
 import com.loftysys.starbites.Activities.MainActivity;
 import com.loftysys.starbites.Activities.SplashScreen;
 import com.loftysys.starbites.Extras.Config;
@@ -61,9 +58,6 @@ import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_FIRST_USER;
-import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
 //import com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment;
@@ -71,7 +65,7 @@ import static android.view.View.GONE;
 public class ChoosePaymentMethod extends Fragment {
     public static String lastVoucher = "";
     public static String location;
-    static boolean dontgo ;
+    static boolean dontgo;
     public AlertDialog browser;
     ProgressDialog progressDialog;
     View view;
@@ -149,7 +143,7 @@ public class ChoosePaymentMethod extends Fragment {
                         break;
                     case R.id.voucher:
                         paymentMethodsGroup.clearCheck();
-                         ((MainActivity)getActivity()).loadFragment(new VoucherSelect(),true);
+                        ((MainActivity) getActivity()).loadFragment(new VoucherSelect(), true);
                         //voucherBox.setVisibility(View.VISIBLE);
                         break;
                     case R.id.cod:
@@ -317,7 +311,7 @@ public class ChoosePaymentMethod extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),android.R.style.Theme_Black_NoTitleBar_Fullscreen).setCancelable(false).setOnCancelListener(new DialogInterface.OnCancelListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen).setCancelable(false).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 Toast.makeText(getActivity(), "Payment Window was closed", Toast.LENGTH_SHORT).show();
@@ -392,19 +386,22 @@ public class ChoosePaymentMethod extends Fragment {
 
 
     public void SlydePay() {
-        MainActivity reference = (MainActivity)getActivity();
+        MainActivity reference = (MainActivity) getActivity();
         try {
             SlydepayPayment slydepayPayment = new com.apps.norris.paywithslydepay.core.SlydepayPayment(getActivity());
             slydepayPayment.initCredentials("hillsontechnology@outlook.com", "1545075302893");
-        } catch (Throwable e) {e.printStackTrace();}
-        PayWithSlydepay.Pay(getActivity(),"Your order with Starbites",Double.parseDouble(reference.totalAmountPayable),"Starbites order",MainActivity.userId,"hillsontechnology@outlook.com",MyCartList.cartistResponseData.getCartid(),"233268000322",2);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        PayWithSlydepay.Pay(getActivity(), "Your order with Starbites", Double.parseDouble(reference.totalAmountPayable), "Starbites order", MainActivity.userId, "hillsontechnology@outlook.com", MyCartList.cartistResponseData.getCartid(), "", 2);
     }
-
 
 
     private void moveNext() {
         paymentMethod = "";
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
+            case R.id.ipay:
+                Toast.makeText(getActivity(), "Under Integration", Toast.LENGTH_SHORT).show();
             case R.id.asoriba:
                 voucherBox.setVisibility(GONE);
                 /*
@@ -572,7 +569,6 @@ public class ChoosePaymentMethod extends Fragment {
         editText.requestFocus();
         return false;
     }
-
 
 
     private boolean validatePinCode(EditText editText) {

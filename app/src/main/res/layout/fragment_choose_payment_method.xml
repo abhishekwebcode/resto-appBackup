@@ -296,12 +296,19 @@
                             android:layout_height="wrap_content"
                             android:text="Pay Using Hubtel" />
 
+
                         <RadioButton
                             android:id="@+id/voucher"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="Pay Using Voucher" />
+                        <RadioButton
+                            android:id="@+id/ipay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Pay Using iPay" />
 
                         <RadioButton
                             android:visibility="gone"
