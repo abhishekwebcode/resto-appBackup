@@ -389,7 +389,7 @@ public class ChoosePaymentMethod extends Fragment {
         MainActivity reference = (MainActivity) getActivity();
         try {
             SlydepayPayment slydepayPayment = new com.apps.norris.paywithslydepay.core.SlydepayPayment(getActivity());
-            slydepayPayment.initCredentials("hillsontechnology@outlook.com", "1545075302893");
+            slydepayPayment.initCredentials("chief.nuamahfc@starbitesgh.com", "1567419825087");
         } catch (Throwable e) {
             e.printStackTrace();
         }
