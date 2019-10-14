@@ -2,6 +2,7 @@ package com.loftysys.starbites.Fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -103,20 +104,23 @@ public class MainFragment extends Fragment {
         Log.d("onStart", "called " + viewPagerCurrentPos);
         MainActivity.search.setVisibility(View.VISIBLE);
         selectedPosList = new ArrayList<>();
-        if (viewPagerCurrentPos == 0) {
-            for (int i = 0; i < SplashScreen.recommendedProductList.size(); i++) {
-                selectedPosList.add(0);
+        if (SplashScreen.recommendedProductList!=null) {
+            if (viewPagerCurrentPos == 0) {
+                for (int i = 0; i < SplashScreen.recommendedProductList.size(); i++) {
+                    selectedPosList.add(0);
+                }
+            } else {
+                for (int i = 0; i < SplashScreen.categoryListResponseData.get(viewPagerCurrentPos - 1).getProducts().size(); i++) {
+                    selectedPosList.add(0);
+                }
             }
+            selectedPosHashMap.put(viewPagerCurrentPos, selectedPosList);
+            instances = new ArrayList<>();
+            createTabs(); // create custom tabs
+            Config.getCartList(getActivity(), true);
         } else {
-            for (int i = 0; i < SplashScreen.categoryListResponseData.get(viewPagerCurrentPos - 1).getProducts().size(); i++) {
-                selectedPosList.add(0);
-            }
+            startActivity(new Intent(getActivity(),SplashScreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
-        selectedPosHashMap.put(viewPagerCurrentPos, selectedPosList);
-        instances = new ArrayList<>();
-        createTabs(); // create custom tabs
-        Config.getCartList(getActivity(), true);
-
 
     }
 
@@ -183,7 +187,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {
                 enableDisableSwipeRefresh(state == ViewPager.SCROLL_STATE_IDLE);
-
             }
         });
     }

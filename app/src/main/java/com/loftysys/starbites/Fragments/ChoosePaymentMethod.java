@@ -102,6 +102,15 @@ public class ChoosePaymentMethod extends Fragment {
     TextView amountPayable;
 
 
+    public void payI_Pay() {
+        try {
+            ((MainActivity) getActivity()).loadFragment(new iPay(), true);
+        } catch (Throwable e) {
+            Log.d("iPAY", "payI_Pay: "+e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -400,8 +409,12 @@ public class ChoosePaymentMethod extends Fragment {
     private void moveNext() {
         paymentMethod = "";
         switch (paymentMethodsGroup.getCheckedRadioButtonId()) {
+            case R.id.card:
+                Toast.makeText(getActivity(), "Will be available in next version", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.ipay:
-                Toast.makeText(getActivity(), "Under Integration", Toast.LENGTH_SHORT).show();
+                payI_Pay();
+                break;
             case R.id.asoriba:
                 voucherBox.setVisibility(GONE);
                 /*

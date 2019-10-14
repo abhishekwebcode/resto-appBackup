@@ -47,12 +47,10 @@ android {
 
 dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
-
     implementation 'com.google.firebase:firebase-analytics:16.0.4'
     implementation 'com.google.firebase:firebase-messaging:17.3.3'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.4'
-
     implementation 'com.android.support:support-v4:28.0.0'
     //implementation 'com.android.support:support-v4:27.0.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -83,8 +81,8 @@ dependencies {
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    api project(path: ':paywithslydepay')
+    implementation project(path: ':paywithslydepay')
     implementation 'com.github.Cutta:TagView:1.3'
-
+    //implementation 'com.ramotion.paperonboarding:paper-onboarding:1.1.3'
 }
 apply plugin: 'com.google.gms.google-services'
