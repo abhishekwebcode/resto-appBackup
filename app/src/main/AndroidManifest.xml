@@ -52,6 +52,8 @@
         <activity
             android:name="com.loftysys.starbites.Activities.SignUp"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activities.PaperOnboardingActivity" android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.loftysys.starbites.Activities.ForgotPassword"
             android:screenOrientation="portrait" />
