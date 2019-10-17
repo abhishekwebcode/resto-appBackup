@@ -214,26 +214,19 @@ public class SplashScreen extends Activity {
             startActivity(intent);
             finishAffinity();
         } else if (Common.getSavedUserData(SplashScreen.this, "firstTimeLogin").equalsIgnoreCase("")) {
-            if (false) {
-                Config.moveTo(SplashScreen.this, Login.class);
-            } else {
-                Config.moveTo(SplashScreen.this, PaperOnboardingActivity.class);
-            }
-            finishAffinity();
-        } else {
-            if (Common.getSavedUserData(SplashScreen.this,"userid").equals("")) {
-                Config.moveTo(SplashScreen.this, PaperOnboardingActivity.class);
-            }
-            else {
-                Config.moveTo(SplashScreen.this, MainActivity.class);
-                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                intent.putExtra("isFromNotification", isFromNotification);
-                startActivity(intent);
-
-            }
+            Config.moveTo(SplashScreen.this, PaperOnboardingActivity.class);
             finishAffinity();
         }
-
+        else if(Common.getSavedUserData(SplashScreen.this, "userId").equalsIgnoreCase("")) {
+            Config.moveTo(SplashScreen.this, Login.class);
+            finishAffinity();
+        }
+        else {
+            Config.moveTo(SplashScreen.this, MainActivity.class);
+            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+            intent.putExtra("isFromNotification", isFromNotification);
+            startActivity(intent);
+            finishAffinity();
+        }
     }
-
 }

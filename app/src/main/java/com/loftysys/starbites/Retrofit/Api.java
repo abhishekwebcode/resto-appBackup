@@ -15,7 +15,6 @@ import retrofit.client.Response;
  * Created by AbhiAndroid
  */
 public class Api {
-
     public static ApiInterface getClient() {
         //final OkHttpClient okHttpClient = new OkHttpClient.Builder().readTimeout(60,TimeUnit.SECONDS).writeTimeout(60,TimeUnit.SECONDS).build();
         // change your base URL

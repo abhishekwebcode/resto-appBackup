@@ -1,5 +1,10 @@
 package com.loftysys.starbites.PaymentIntegrationMethods;
 
+import android.support.v7.app.AppCompatActivity;
+
+public class StripePaymentIntegration extends AppCompatActivity {}
+
+/*
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -128,3 +133,4 @@ public class StripePaymentIntegration extends AppCompatActivity {
                 });
     }
 }
+*/

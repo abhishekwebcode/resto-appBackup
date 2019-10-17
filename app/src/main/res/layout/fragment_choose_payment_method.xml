@@ -287,14 +287,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Pay Using iPay" />
+                            android:text="Pay Using Mobile Wallet" />
 
                         <RadioButton
                             android:id="@+id/slydepay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
-                            android:text="Pay Using SlydePay" />
+                            android:text="Pay Using Mobile Wallet or Card" />
                         <RadioButton
                             android:visibility="visible"
                             android:id="@+id/card"

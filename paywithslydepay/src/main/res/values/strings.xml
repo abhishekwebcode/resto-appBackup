@@ -6,7 +6,11 @@
     <string name="mm_instruction">Please enter your number</string>
     <string name="visa_loading_message">Select visa in the tab that opens and close the window when you complete the transaction</string>
     <string name="mm_loading_message">You will receive a bill prompt soon</string>
-    <string name="mm_confirm_message">Dial *170# and choose option 6: Wallet followed by option 3: My Approvals to confirm payment. If payment is confirmed successfully click CONFIRM to complete. NB: Wait for confirmation message before you tap CONFIRM. Cancel if you wish to terminate transaction</string>
+    <string name="mm_confirm_message">
+        1. Kindly approve the payment request pop up that has been sent to your phone.
+        2. Click on confirm button once you`re done.
+        NB: Wait for confirmation SMS before you confirm.
+    </string>
     <string name="visa_confirm_message">Click confirm to complete transaction.</string>
     <string name="successful_purchase" formatted="false">You have successfully purchased %s for ¢ %.2f</string>
 </resources>

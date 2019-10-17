@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,6 +47,56 @@ import static com.loftysys.starbites.Fragments.showVouchers.TAG;
 
 public class iPay extends Fragment {
 
+    public void iPayFailed() {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
+        final MainActivity reference = (MainActivity) getActivity();
+        Integer delivery = 0;
+        try {
+            delivery = Integer.parseInt(reference.deliveryCharge);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        Api.getClient().addOrderVoucher(MainActivity.userId,
+                MyCartList.cartistResponseData.getCartid(),
+                ChoosePaymentMethod.address,
+                ChoosePaymentMethod.mobileNo,
+                "iPay Order for " + MainActivity.userId,
+                "Failed",
+                reference.totalAmountPayable,
+                "iPay",
+                delivery,
+                reference.tax,
+                reference.branch == null ? "" : reference.branch,
+                reference.tableNumber == null ? "" : reference.tableNumber,
+                reference.deliveryType == null ? "" : reference.deliveryType,
+                "",
+                ChoosePaymentMethod.location,
+                new Callback<SignUpResponse>() {
+                    @Override
+                    public void success(SignUpResponse signUpResponse, Response response) {
+                        pDialog.dismiss();
+                        try {
+                            Log.d("RESPONSE", Converter.getString(response));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        ((MainActivity)reference.getActivity()).getSupportFragmentManager().popBackStack();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        pDialog.dismiss();
+                        error.printStackTrace();
+                        Toast.makeText(getActivity(), "Error registering your order", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
     public void bookIPay() {
         final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(getActivity().getResources().getColor(R.color.colorPrimary));
@@ -63,10 +114,10 @@ public class iPay extends Fragment {
                 MyCartList.cartistResponseData.getCartid(),
                 ChoosePaymentMethod.address,
                 ChoosePaymentMethod.mobileNo,
-                "Slydepay Order for " + MainActivity.userId,
+                "iPay Order for " + MainActivity.userId,
                 "Complete",
                 reference.totalAmountPayable,
-                "Slydepay",
+                "iPay",
                 delivery,
                 reference.tax,
                 reference.branch == null ? "" : reference.branch,
@@ -116,7 +167,7 @@ public class iPay extends Fragment {
                     break;
                 case "Fail":
                     Toast.makeText(iPay.getActivity(), "Sorry, your payment was not successful", Toast.LENGTH_SHORT).show();
-                    ((MainActivity)iPay.getActivity()).getSupportFragmentManager().popBackStack();
+                    iPayFailed();
                     break;
                 default:
                     Toast.makeText(iPay.getActivity(), "Sorry, something went wrong", Toast.LENGTH_SHORT).show();
@@ -138,16 +189,26 @@ public class iPay extends Fragment {
         MainActivity.title.setText("iPay");
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
         webview.addJavascriptInterface(new paymentInterceptor(this), "husidhfisd");
         webview.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 Log.d(TAG, "onConsoleMessage: " + consoleMessage.message());
+
                 return super.onConsoleMessage(consoleMessage);
             }
         });
         webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -165,9 +226,10 @@ public class iPay extends Fragment {
             postData =
                     "merchant_key=" + URLEncoder.encode("df3c2d50-e04a-11e9-ac72-f23c9170642f", "UTF-8") +
                             "&cancelled_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/terminated.php", "UTF-8") +
+                            "&success_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/true.php", "UTF-8") +
                             "&invoice_id=" + URLEncoder.encode(invoice_id, "UTF-8") +
                             "&total=" + URLEncoder.encode(total, "UTF-8") +
-                            "&ipn_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/ipn.php", "UTF-8") ;
+                            "&ipn_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/ipn.php", "UTF-8");
         } catch (Throwable e) {
             postData = "";
             e.printStackTrace();

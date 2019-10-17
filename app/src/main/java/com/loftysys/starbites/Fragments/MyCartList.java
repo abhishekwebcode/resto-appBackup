@@ -192,11 +192,10 @@ public class MyCartList extends Fragment {
 
     public void onBranchChanged(int pos) {
         if (pos != 0) {
-            branch = branches.get(pos).name;
+            branch = branches.get(pos).id;
         } else {
             branch = null;
         }
-
     }
 
     @Override

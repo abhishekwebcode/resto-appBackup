@@ -76,11 +76,12 @@
             android:name="com.paypal.android.sdk.payments.PayPalService"
             android:exported="false" />
         <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment" />
+
+        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration" />
         -->
 
         <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed" />
 
-        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDagu1__IQVkCjlGIGYkbdUf-JcJ0hofZ0" />
