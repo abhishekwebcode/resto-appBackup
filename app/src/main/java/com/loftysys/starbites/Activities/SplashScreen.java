@@ -42,6 +42,7 @@ public class SplashScreen extends Activity {
     public static List<Product> allProductsData,recommendedProductList;
     public static List<Product> productList;
     String id = "";
+
     @BindView(R.id.errorText)
     TextView errorText;
     @BindView(R.id.internetNotAvailable)
@@ -64,6 +65,7 @@ public class SplashScreen extends Activity {
         } catch (Exception e) {
             Log.d("error notification data", e.toString());
         }
+
 
         // Check the internet and get response from API's
         if (DetectConnection.checkInternetConnection(getApplicationContext())) {
