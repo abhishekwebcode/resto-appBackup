@@ -5,7 +5,7 @@ package com.loftysys.starbites.PaymentIntegrationMethods;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.loftysys.starbites.Activities.BaseActivity;
 import android.util.Log;
 
 import com.loftysys.starbites.Adapter.CartListAdapter;
@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class PayPalActivityPayment extends AppCompatActivity {
+public class PayPalActivityPayment extends BaseActivity {
 
     static PayPalConfiguration config = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)

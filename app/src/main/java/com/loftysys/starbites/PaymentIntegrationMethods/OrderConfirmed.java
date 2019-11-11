@@ -2,7 +2,7 @@ package com.loftysys.starbites.PaymentIntegrationMethods;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.loftysys.starbites.Activities.BaseActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrderConfirmed extends AppCompatActivity {
+public class OrderConfirmed extends BaseActivity {
 
     @BindView(R.id.continueShopping)
     Button continueShopping;

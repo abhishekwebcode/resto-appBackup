@@ -12,6 +12,7 @@
         android:text="Content title"
         android:textAlignment="center"
         android:textSize="32sp"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
     <TextView
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Content text"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="16sp" />
 

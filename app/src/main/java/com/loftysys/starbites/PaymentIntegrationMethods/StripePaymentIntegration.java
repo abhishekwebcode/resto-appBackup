@@ -1,13 +1,13 @@
 package com.loftysys.starbites.PaymentIntegrationMethods;
 
-import android.support.v7.app.AppCompatActivity;
+import com.loftysys.starbites.Activities.BaseActivity;
 
-public class StripePaymentIntegration extends AppCompatActivity {}
+public class StripePaymentIntegration extends BaseActivity {}
 
 /*
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.loftysys.starbites.Activities.BaseActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +34,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class StripePaymentIntegration extends AppCompatActivity {
+public class StripePaymentIntegration extends BaseActivity {
 
     @BindView(R.id.submit)
     Button submit;

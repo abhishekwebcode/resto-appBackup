@@ -3,7 +3,7 @@ package com.loftysys.starbites.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.loftysys.starbites.Activities.BaseActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,7 +30,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseActivity {
 
 
     @BindViews({R.id.email, R.id.password})
@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         loginLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

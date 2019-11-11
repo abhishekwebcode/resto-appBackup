@@ -3,7 +3,7 @@ package com.loftysys.starbites.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import com.loftysys.starbites.Activities.BaseActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,7 +29,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends BaseActivity {
 
     @BindViews({R.id.username, R.id.email, R.id.password, R.id.confirmPassword})
     List<EditText> editTexts;
@@ -40,7 +40,7 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         loginLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
