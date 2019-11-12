@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Starbites</string>
+    <string name="app_name">Starbites Food &amp; Drink</string>
     <string name="err_msg_email">Please Enter A Valid Email Id</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="emailId">customersupport@starbitesgh.com</string>
