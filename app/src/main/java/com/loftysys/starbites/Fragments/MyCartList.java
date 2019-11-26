@@ -89,6 +89,7 @@ public class MyCartList extends Fragment {
                 dialog.dismiss();
             }
         });
+        dialogBuilder.setTitle("Select Branch");
         dialogBuilder.setCancelable(false);
         //LayoutInflater inflater = this.getLayoutInflater();
         //final View dialogView = inflater.inflate(R.layout.select_table, null);
@@ -161,6 +162,7 @@ public class MyCartList extends Fragment {
                 dialog.dismiss();
             }
         });
+        dialogBuilder.setTitle("Select Table Number");
         dialogBuilder.setCancelable(false);
         //LayoutInflater inflater = this.getLayoutInflater();
         //final View dialogView = inflater.inflate(R.layout.select_table, null);
