@@ -6,6 +6,6 @@ public class ApplicationBase extends android.support.multidex.MultiDexApplicatio
     @Override
     public void onCreate() {
         super.onCreate();
-
+// this is application base
     }
 }
