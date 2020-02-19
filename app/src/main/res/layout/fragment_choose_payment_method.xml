@@ -294,7 +294,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
-                            android:text="Pay Using Mobile Wallet or Card" />
+                            android:text="Pay Using Card or Mobile Wallet " />
                         <RadioButton
                             android:visibility="visible"
                             android:id="@+id/card"
@@ -311,6 +311,7 @@
 
 
                         <RadioButton
+                            android:visibility="gone"
                             android:id="@+id/voucher"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

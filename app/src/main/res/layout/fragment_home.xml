@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical"
-        tools:context="com.loftysys.starbites.Fragments.Home">
+        tools:context="com.hskgroupafrica.comida.Fragments.Home">
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView"
@@ -231,7 +231,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Branches"
+            android:text="Restaurants"
             android:textColor="@color/colorPrimary"
             android:textSize="17sp"
             android:textStyle="bold" />

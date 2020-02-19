@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.loftysys.starbites.R;
+import com.hskgroupafrica.comida.R;
 import com.ramotion.paperonboarding.listeners.PaperOnboardingOnChangeListener;
 import com.ramotion.paperonboarding.listeners.PaperOnboardingOnLeftOutListener;
 import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;

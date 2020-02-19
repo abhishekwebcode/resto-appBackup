@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.loftysys.starbites">
+    package="com.hskgroupafrica.comida">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,24 +20,24 @@
         android:name="android.permission.CAMERA"
         tools:node="remove" />
     <permission
-        android:name="com.loftysys.starbites.permission.C2D_MESSAGE"
+        android:name="com.hskgroupafrica.comida.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/logo_1"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/logo_1"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
-            android:name="com.loftysys.starbites.Activities.MainActivity"
+            android:name=".Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.loftysys.starbites.Activities.SplashScreen"
+            android:name=".Activities.SplashScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -47,21 +47,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.loftysys.starbites.Activities.Login"
+            android:name=".Activities.Login"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.loftysys.starbites.Activities.SignUp"
+            android:name=".Activities.SignUp"
             android:screenOrientation="portrait" />
         <activity android:name=".Activities.PaperOnboardingActivity" android:screenOrientation="portrait"
             />
         <activity
-            android:name="com.loftysys.starbites.Activities.ForgotPassword"
+            android:name=".Activities.ForgotPassword"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.loftysys.starbites.Activities.ProductExtra"
+            android:name=".Activities.ProductExtra"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.loftysys.starbites.Activities.EditCart"
+            android:name=".Activities.EditCart"
             android:screenOrientation="portrait" />
         <!--
         <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
@@ -75,37 +75,37 @@
         <service
             android:name="com.paypal.android.sdk.payments.PayPalService"
             android:exported="false" />
-        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.PayPalActivityPayment" />
+        <activity android:name="comidaymentIntegrationMethods.PayPalActivityPayment" />
 
-        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.StripePaymentIntegration" />
+        <activity android:name="comidaymentIntegrationMethods.StripePaymentIntegration" />
         -->
 
-        <activity android:name="com.loftysys.starbites.PaymentIntegrationMethods.OrderConfirmed" />
+        <activity android:name=".PaymentIntegrationMethods.OrderConfirmed" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDagu1__IQVkCjlGIGYkbdUf-JcJ0hofZ0" />
         <activity
-            android:name="com.loftysys.starbites.Activities.MapViewActivity"
+            android:name=".Activities.MapViewActivity"
             android:screenOrientation="portrait" />
 
 
 
         <!-- Firebase Notifications -->
-        <service android:name="com.loftysys.starbites.FCM.MyFirebaseMessagingService">
+        <service android:name=".FCM.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name="com.loftysys.starbites.FCM.MyFirebaseInstanceIDService">
+        <service android:name=".FCM.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <!-- ./Firebase Notifications -->
-        <activity android:name="com.loftysys.starbites.Activities.AccountVerification"/>
+        <activity android:name=".Activities.AccountVerification"/>
 
     </application>
 

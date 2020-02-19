@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "956418995599",
-    "firebase_url": "https://starbites-app.firebaseio.com",
-    "project_id": "starbites-app",
-    "storage_bucket": "starbites-app.appspot.com"
+    "project_number": "713308966735",
+    "firebase_url": "https://comida2020-5b8b0.firebaseio.com",
+    "project_id": "comida2020-5b8b0",
+    "storage_bucket": "comida2020-5b8b0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:956418995599:android:0ecc1df546da69a3",
+        "mobilesdk_app_id": "1:713308966735:android:f4b615fb70b6b60bc27f3a",
         "android_client_info": {
-          "package_name": "com.loftysys.starbites"
+          "package_name": "com.hskgroupafrica.comida"
         }
       },
       "oauth_client": [
         {
-          "client_id": "956418995599-sepfngv5oqikltt3gb741pd9krrqmi6o.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.loftysys.starbites",
-            "certificate_hash": "62201adb0078737c74ae09cb1d8b554102005c9b"
-          }
-        },
-        {
-          "client_id": "956418995599-73tmm6ea6f6lerj4g5divvfe1nun3qgd.apps.googleusercontent.com",
+          "client_id": "713308966735-s9ho2sjl5e7olcblrrel2c0lnsqs8010.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAFClQSpos5yS1WwJlCWcOIYDzNa1LskN4"
+          "current_key": "AIzaSyAd-LEFKZ0KJjACaQnLDdbU7hYb78O_Qao"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "956418995599-73tmm6ea6f6lerj4g5divvfe1nun3qgd.apps.googleusercontent.com",
+              "client_id": "713308966735-s9ho2sjl5e7olcblrrel2c0lnsqs8010.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

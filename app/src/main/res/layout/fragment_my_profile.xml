@@ -157,7 +157,7 @@
                     android:paddingLeft="6dp">
 
 
-                    <com.loftysys.starbites.utilities.AutoDrop
+                    <com.hskgroupafrica.comida.utilities.AutoDrop
                         android:id="@+id/pincodeEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -1,5 +1,5 @@
 package com.ramotion.paperonboarding;
-import com.loftysys.starbites.R;
+import com.hskgroupafrica.comida.R;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
