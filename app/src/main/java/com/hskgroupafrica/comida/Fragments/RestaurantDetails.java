@@ -175,7 +175,7 @@ public class RestaurantDetails extends Fragment {
             public void onMapReady(GoogleMap googleMap) {
                 LatLng citylocation = new LatLng(Double.parseDouble(SplashScreen.restaurantDetailResponseData.getLat()), Double.parseDouble(SplashScreen.restaurantDetailResponseData.getLon()));
 
-                googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon)).position(citylocation).title("Marker Title").snippet("Marker Description"));
+                googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.comida_icon)).position(citylocation).title("Marker Title").snippet("Marker Description"));
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(citylocation).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

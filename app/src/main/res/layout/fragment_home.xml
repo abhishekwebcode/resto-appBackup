@@ -94,7 +94,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/maps_icon" />
+                            android:src="@drawable/comida_icon" />
 
                         <LinearLayout
                             android:id="@+id/viewDistanceLayout"

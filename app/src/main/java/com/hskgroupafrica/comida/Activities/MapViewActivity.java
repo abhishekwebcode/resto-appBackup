@@ -96,7 +96,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                 LatLng citylocation = new LatLng(lat, log);
 
 
-                googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon)).position(citylocation).title("Marker Title").snippet("Marker Description"));
+                googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.comida_icon)).position(citylocation).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(citylocation).zoom(12).build();

@@ -11,7 +11,7 @@ public class Api {
         //final OkHttpClient okHttpClient = new OkHttpClient.Builder().readTimeout(60,TimeUnit.SECONDS).writeTimeout(60,TimeUnit.SECONDS).build();
         // change your base URL
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("https://comidaghana.com/food_app/JSON/API") //Set the Root URL
+                .setEndpoint("https://comidaghana.com/food_app/JSON") //Set the Root URL
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setLog(new AndroidLog("RETROFIT LOG"))
                 //.setClient(new OkClient(okHttpClient))

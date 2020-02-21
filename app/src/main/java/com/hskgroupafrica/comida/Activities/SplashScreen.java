@@ -18,6 +18,8 @@ import com.hskgroupafrica.comida.MVP.RecommendedProductsResponse;
 import com.hskgroupafrica.comida.MVP.RestaurantDetailResponse;
 import com.hskgroupafrica.comida.R;
 import com.hskgroupafrica.comida.Retrofit.Api;
+import com.hskgroupafrica.comida.Retrofit.ApiInterface;
+import com.squareup.picasso.OkHttpDownloader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 
 public class SplashScreen extends Activity {
@@ -51,6 +55,7 @@ public class SplashScreen extends Activity {
         ButterKnife.bind(this);
         // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         // check data from FCM
         try {
             Intent intent = getIntent();
@@ -59,7 +64,6 @@ public class SplashScreen extends Activity {
         } catch (Exception e) {
             Log.d("error notification data", e.toString());
         }
-
 
         // Check the internet and get response from API's
         if (DetectConnection.checkInternetConnection(getApplicationContext())) {

@@ -216,12 +216,12 @@ public class iPay extends Fragment {
         invoice_id=MyCartList.cartistResponseData.getCartid()+String.valueOf(new Date().getTime());
         try {
             postData =
-                    "merchant_key=" + URLEncoder.encode("df3c2d50-e04a-11e9-ac72-f23c9170642f", "UTF-8") +
-                            "&cancelled_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/terminated.php", "UTF-8") +
-                            "&success_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/true.php", "UTF-8") +
+                    "merchant_key=" + URLEncoder.encode("54628fda-fc1a-11e9-be62-f23c9170642f", "UTF-8") +
+                            "&cancelled_url=" + URLEncoder.encode("https://www.comidaghana.com/food_app/JSON/terminated.php", "UTF-8") +
+                            "&success_url=" + URLEncoder.encode("https://www.comidaghana.com/food_app/JSON/true.php", "UTF-8") +
                             "&invoice_id=" + URLEncoder.encode(invoice_id, "UTF-8") +
                             "&total=" + URLEncoder.encode(total, "UTF-8") +
-                            "&ipn_url=" + URLEncoder.encode("https://www.comidaghana.com/starbitesgh_app/JSON/ipn.php", "UTF-8");
+                            "&ipn_url=" + URLEncoder.encode("https://www.comidaghana.com/food_app/JSON/ipn.php", "UTF-8");
         } catch (Throwable e) {
             postData = "";
             e.printStackTrace();
