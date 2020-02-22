@@ -2,6 +2,7 @@ package com.hskgroupafrica.comida.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -186,10 +187,18 @@ public class ProductDetail extends Fragment {
                         addToFavorite.setVisibility(View.VISIBLE);
                         Log.d("checkListResponse", addToWishlistResponse.getSuccess() + "");
                         if (addToWishlistResponse.getSuccess().equalsIgnoreCase("true")) {
-                            addToFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorited_icon, 0, 0, 0);
-                        } else
-                            addToFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfavorite_icon, 0, 0, 0);
-
+                            final Drawable drawable = getResources().getDrawable(R.drawable.favorited_icon);
+                            com.hskgroupafrica.comida.Extras.ApplicationBase.WrappedDrawable wrappedDrawable = new com.hskgroupafrica.comida.Extras.ApplicationBase.WrappedDrawable(drawable);
+                            wrappedDrawable.setBounds(0,0,40,40);
+                            addToFavorite.setCompoundDrawablesWithIntrinsicBounds(wrappedDrawable ,null, null, null);
+                            //addToFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorited_icon, 0, 0, 0);
+                        } else {
+                            final Drawable drawable = getResources().getDrawable(R.drawable.unfavorite_icon);
+                            com.hskgroupafrica.comida.Extras.ApplicationBase.WrappedDrawable wrappedDrawable = new com.hskgroupafrica.comida.Extras.ApplicationBase.WrappedDrawable(drawable);
+                            wrappedDrawable.setBounds(0,0,40,40);
+                            addToFavorite.setCompoundDrawablesWithIntrinsicBounds(wrappedDrawable ,null, null, null);
+                            //addToFavorite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unfavorite_icon, 0, 0, 0);
+                        }
                     }
 
                     @Override
