@@ -58,7 +58,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                 finish();
             }
         });
-        title.setText("Starbites East Legon");
+        title.setText("Comida East Legon");
         mapFragment.getMapAsync(this);
     }
 

@@ -402,7 +402,7 @@ public class ChoosePaymentMethod extends Fragment {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        PayWithSlydepay.Pay(getActivity(), "Your order with Starbites", Double.parseDouble(reference.totalAmountPayable), "Starbites order", MainActivity.userId, "hillsontechnology@outlook.com", MyCartList.cartistResponseData.getCartid(), "", 2);
+        PayWithSlydepay.Pay(getActivity(), "Your order with Comida", Double.parseDouble(reference.totalAmountPayable), "Comida order", MainActivity.userId, "hillsontechnology@outlook.com", MyCartList.cartistResponseData.getCartid(), "", 2);
     }
 
 

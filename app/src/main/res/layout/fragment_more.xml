@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txtCopyright"
                     android:maxLines="3"
-                    android:text="Copyright 2019 Starbites\nAll rights reserved"
+                    android:text="Copyright 2019 Comida \nAll rights reserved"
                     android:textSize="13sp" />
 
             </RelativeLayout>

@@ -34,8 +34,8 @@ public class PaperOnboardingActivity extends BaseActivity {
     private ArrayList<PaperOnboardingPage> getDataForOnboarding() {
         // prepare data
         PaperOnboardingPage scr1 = new PaperOnboardingPage(
-                "Welcome to Starbites Mobility Experience",
-                "Starbites Food & Drink now on Mobile.",
+                "Welcome to Comida Mobility Experience",
+                "Comida Food & Drink now on Mobile.",
                 color, R.drawable.welcome, R.drawable.bottom_welcome
         );
         PaperOnboardingPage scr2 = new PaperOnboardingPage(

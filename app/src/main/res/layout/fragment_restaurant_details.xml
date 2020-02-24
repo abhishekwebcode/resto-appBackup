@@ -206,7 +206,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:autoLink="web"
-                                android:text="www.starbites.com"
+                                android:text="www.comida.com"
                                 android:textColor="#170F0F"
                                 android:textSize="12sp" />
                         </LinearLayout>

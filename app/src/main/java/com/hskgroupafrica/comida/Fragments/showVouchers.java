@@ -181,7 +181,7 @@ public class showVouchers extends Fragment {
             ((AppCompatTextView)v.findViewById(R.id.textview)).setText(p.voucher_name);
             ImageView imageView = ((ImageView)v.findViewById(R.id.imageview));
             Picasso.with(mContext)
-                    .load("https://comidaghana.com/starbitesgh_app/"+p.voucher_image)
+                    .load("https://comidaghana.com/food_app/"+p.voucher_image)
                     .placeholder(R.drawable.defaultimage)
                     .into(imageView);
             return v;
